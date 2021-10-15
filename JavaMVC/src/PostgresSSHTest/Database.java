@@ -16,7 +16,7 @@ class PostgresSSHTest {
         int rport = 5432;
         String user = Credentials.USER.toString(); //change to your username
         String password = Credentials.PASSWORD.toString(); //change to your password
-        String databaseName = "databaseName"; //change to your database name
+        String databaseName = "p320_09"; //change to your database name
 
         String driverName = "org.postgresql.Driver";
         Connection conn = null;
