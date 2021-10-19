@@ -1,4 +1,4 @@
-package PostgresSSHTest;
+package JavaMVC.src.PostgresSSHTest;
 
 import com.jcraft.jsch.*;
 
@@ -8,15 +8,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 class PostgresSSHTest {
-    
-    public static void main(String[] args) throws SQLException {
 
+    public static void main(String[] args) throws SQLException {
         int lport = 5432;
         String rhost = "starbug.cs.rit.edu";
         int rport = 5432;
-        String user = Credentials.USER.toString(); //change to your username
-        String password = Credentials.PASSWORD.toString(); //change to your password
-        String databaseName = "p320_09"; //change to your database name
+        String user = Credentials.USER.toString(); // change to your username
+        String password = Credentials.PASSWORD.toString(); // change to your password
+        String databaseName = "p320_09"; // change to your database name
 
         String driverName = "org.postgresql.Driver";
         Connection conn = null;
@@ -28,14 +27,15 @@ class PostgresSSHTest {
             session = jsch.getSession(user, rhost, 22);
             session.setPassword(password);
             session.setConfig(config);
-            session.setConfig("PreferredAuthentications","publickey,keyboard-interactive,password");
+            session.setConfig(
+                    "PreferredAuthentications", "publickey,keyboard-interactive,password");
             session.connect();
             System.out.println("Connected");
             int assigned_port = session.setPortForwardingL(lport, "localhost", rport);
             System.out.println("Port Forwarded");
 
             // Assigned port could be different from 5432 but rarely happens
-            String url = "jdbc:postgresql://localhost:"+ assigned_port + "/" + databaseName;
+            String url = "jdbc:postgresql://localhost:" + assigned_port + "/" + databaseName;
 
             System.out.println("database Url: " + url);
             Properties props = new Properties();
@@ -61,5 +61,4 @@ class PostgresSSHTest {
             }
         }
     }
-
 }
