@@ -1,9 +1,9 @@
-package JavaMVC.src.Model;
+package Model;
 
-import JavaMVC.src.Model.Entities.Album;
-import JavaMVC.src.Model.Entities.Playlist;
-import JavaMVC.src.Model.Entities.Song;
-import JavaMVC.src.Model.Entities.User;
+import Model.Entities.Album;
+import Model.Entities.Playlist;
+import Model.Entities.Song;
+import Model.Entities.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

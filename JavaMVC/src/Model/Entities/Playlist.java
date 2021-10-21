@@ -1,4 +1,4 @@
-package JavaMVC.src.Model.Entities;
+package Model.Entities;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package JavaMVC.src.PostgresSSHTest;
+package PostgresSSHTest;
 
 import com.jcraft.jsch.*;
 

@@ -1,6 +1,6 @@
-package JavaMVC.src.Model;
+package Model;
 
-import JavaMVC.src.Model.Entities.User;
+import Model.Entities.User;
 
 import java.security.InvalidParameterException;
 

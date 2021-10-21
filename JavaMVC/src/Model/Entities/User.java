@@ -1,4 +1,4 @@
-package JavaMVC.src.Model.Entities;
+package Model.Entities;
 
 import java.util.Collection;
 
@@ -40,7 +40,7 @@ public class User {
         this.userNumFollowers--;
     }
 
-    public Collection<Song> getCollection(String collectionName) {
+    public Collection<JavaMVC.src.Model.Entities.Song> getCollection(String collectionName) {
         return null;
     }
 }

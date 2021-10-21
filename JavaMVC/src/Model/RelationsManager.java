@@ -1,5 +1,4 @@
-package JavaMVC.src.Model;
-
+package Model;
 
 /**
  * FIXME

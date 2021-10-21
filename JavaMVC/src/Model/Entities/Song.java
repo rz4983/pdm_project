@@ -1,4 +1,4 @@
-package JavaMVC.src.Model.Entities;
+package Model.Entities;
 
 public class Song {
     private final String songID;
