@@ -1,13 +1,10 @@
-package JavaMVC.src.Controller;
+package Controller;
 
 import Model.Entities.Playlist;
 import Model.Entities.User;
 import Model.Search;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
@@ -51,6 +48,10 @@ public class Application {
                 case "search" -> {
                     // TODO
                 }
+
+                case "create" -> {
+                    // TODO
+                }
                 case "play" -> {
                     // TODO
                 }
@@ -78,7 +79,6 @@ public class Application {
     }
 
     private void help() {
-        String newLine = System.getProperty("line.separator");
         System.out.println("""
                     _                                                \s
                   ,´ `.                                              \s
@@ -100,16 +100,17 @@ public class Application {
                 '.´
             """);
 
-        System.out.println("login -- Show the login prompt");
+        System.out.println("login  -- Show the login prompt");
         System.out.println("logout -- Logout of the application");
-        System.out.println("join -- Join the playform");
-        System.out.println("search -- ");
-        System.out.println("play -- ");
-        System.out.println("follow -- ");
-        System.out.println("rename -- ");
-        System.out.println("add -- ");
-        System.out.println("list -- ");
-        System.out.println("share -- ");
-        System.out.println("help -- ");
+        System.out.println("join   -- Join the platform");
+        System.out.println("create -- Create <playlist name>");
+        System.out.println("search -- search <category [song]> <term>");
+        System.out.println("play   -- play<song name | Song ID>");
+        System.out.println("follow -- follow <user email>");
+        System.out.println("rename -- rename <playlist ID> <new name>");
+        System.out.println("add    -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.. [default]>");
+        System.out.println("list   -- list all playlist");
+        System.out.println("share  -- share <playlist Name | ID> email");
+        System.out.println("help   -- Print this message.");
     }
 }
