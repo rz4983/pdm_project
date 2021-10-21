@@ -40,7 +40,7 @@ public class User {
         this.userNumFollowers--;
     }
 
-    public Collection<JavaMVC.src.Model.Entities.Song> getCollection(String collectionName) {
+    public Collection<Song> getCollection(String collectionName) {
         return null;
     }
 }
