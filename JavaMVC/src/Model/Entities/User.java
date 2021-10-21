@@ -14,18 +14,18 @@ public class User {
     public User(
             String email,
             String username,
-            String creationDate,
-            String lastAccessDate,
+            long creationDate,
+            long lastAccessDate,
             String firstName,
             String lastName,
-            String userNumFollowers) {
+            long userNumFollowers) {
         this.email = email;
         this.username = username;
-        this.creationDate = Long.parseLong(creationDate);
-        this.lastAccessDate = Long.parseLong(lastAccessDate);
+        this.creationDate = creationDate;
+        this.lastAccessDate = lastAccessDate;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userNumFollowers = Long.parseLong(userNumFollowers);
+        this.userNumFollowers = userNumFollowers;
     }
 
     public void setLastAccessDate(long lastAccessDate) {

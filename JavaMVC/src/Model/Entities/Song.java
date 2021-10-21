@@ -2,19 +2,23 @@ package JavaMVC.src.Model.Entities;
 
 public class Song {
     private final String songID;
-    private final String length;
+    private final int length;
     private final String title;
-    private final String songReleaseDate;
+    private final int songReleaseDate;
 
-    Song(String songID, String length, String title, String songReleaseDate) {
+    public Song(String songID, int length, String title, int songReleaseDate) {
         this.songID = songID;
-        this.length = length;
+        this.length = 0;
         this.title = title;
         this.songReleaseDate = songReleaseDate;
     }
 
-    Song(String songID) {
+    public Song(String songID) {
         // Create all of this by fetching form the database.
-        this(songID, null, null, null);
+        this(songID, 0, null, 0);
+    }
+
+    public void playSong() {
+        // mark song as played
     }
 }
