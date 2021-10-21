@@ -14,9 +14,7 @@ public class Song {
     }
 
     Song(String songID) {
-        this.songID = songID;
-        this.length = null;
-        this.title = null;
-        this.songReleaseDate = null;
+        // Create all of this by fetching form the database.
+        this(songID, null, null, null);
     }
 }
