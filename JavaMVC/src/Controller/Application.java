@@ -1,12 +1,12 @@
 package Controller;
 
-import Model.Authentication;
+import Model.QueryDB.Authentication;
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
-import Model.RelationsManager;
-import Model.Search;
+import Model.QueryDB.RelationsManager;
+import Model.QueryDB.Search;
 
 import View.ptui;
 
