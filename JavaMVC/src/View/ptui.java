@@ -75,7 +75,7 @@ public class ptui {
         return null;
     }
 
-    public static void search(Collection<Album> albums) {}
+    public static void searchAlbums(Collection<Album> albums) {}
 
-    public static void search(Collection<Song> songs) {}
+    public static void searchSongs(Collection<Song> songs) {}
 }

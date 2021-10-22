@@ -56,8 +56,8 @@ public class Application {
                 }
                 case "search" -> {
                     switch (fields[1].toLowerCase()) {
-                        case "song" -> ptui.search(Search.searchSongs("term"));
-                        case "album" -> ptui.search(Search.searchAlbum("", "", "", true));
+                        case "song" -> ptui.searchSongs(Search.searchSongs("term"));
+                        case "album" -> ptui.searchAlbums(Search.searchAlbum("", "", "", true));
                     }
                 }
 
