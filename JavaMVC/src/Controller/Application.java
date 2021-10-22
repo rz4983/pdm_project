@@ -37,7 +37,7 @@ public class Application {
         System.out.print("> ");
         while (scanner.hasNextLine()) {
             text = scanner.nextLine();
-            String[] fields = text.split("\\s+");
+            String[] fields = text.split("\\s+(?!\\s)");
             switch (fields[0].toLowerCase()) {
                 case "login" -> {
                     String[] info = ptui.login();

@@ -40,7 +40,6 @@ public class Authentication {
      * @param email email to log user as
      * @param password password of the user.
      * @return User instance
-     * @throws AuthenticationException
      */
     public static User login(String email, String password) {
         // TODO Auto-generated method stub
