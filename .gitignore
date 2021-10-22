@@ -1,6 +1,7 @@
 /JavaMVC/src/Controller/PostgresSSHTest/Credentials.java
 .vscode/
 /.idea/dataSources.xml
+**/Credentials.java
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/osx,macos,java,ssh,windows,linux
