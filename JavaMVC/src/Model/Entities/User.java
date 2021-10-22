@@ -40,7 +40,8 @@ public class User {
         this.userNumFollowers--;
     }
 
-    public Collection<Song> getCollection(String collectionName) {
+    public Collection<Playlist> getCollections() {
+        // TODO sql query here.
         return null;
     }
 }

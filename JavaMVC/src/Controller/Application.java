@@ -1,23 +1,24 @@
 package Controller;
 
-import static View.ptui.help;
-
+import Model.Authentication;
+import Model.Entities.Album;
 import Model.Entities.Playlist;
+import Model.Entities.Song;
 import Model.Entities.User;
+import Model.RelationsManager;
 import Model.Search;
 
+import View.ptui;
+
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Scanner;
 
 public class Application {
+
     private User currentUser;
-    private Collection<Playlist> playlists;
 
     Application() {
         this.currentUser = null;
-        this.playlists = new ArrayList<>();
     }
 
     public static void main(String[] args) {
@@ -32,48 +33,88 @@ public class Application {
     private void getInput(InputStream in) {
         String text = null;
         Scanner scanner = new Scanner(in);
-        help();
+        ptui.help();
         System.out.print("> ");
         while (scanner.hasNextLine()) {
-            text = new String(scanner.nextLine());
+            text = scanner.nextLine();
             String[] fields = text.split("\\s+");
             switch (fields[0].toLowerCase()) {
                 case "login" -> {
-                    // TODO
+                    String[] info = ptui.login();
+                    if (Authentication.validUser(null, info[0])) {
+                        this.currentUser = Authentication.login(info[0], info[1]);
+                        // TODO check for null.
+                    }
                 }
                 case "logout" -> {
-                    // TODO
+                    this.currentUser = null;
                 }
                 case "join" -> {
-                    // TODO
+                    String[] info = ptui.join();
+                    this.currentUser =
+                            Authentication.createUser(info[0], info[1], info[2], info[3], info[4]);
                 }
                 case "search" -> {
-                    // TODO
+                    switch (fields[1].toLowerCase()) {
+                        case "song" -> ptui.search(Search.searchSongs("term"));
+                        case "album" -> ptui.search(Search.searchAlbum("", "", "", true));
+                    }
                 }
 
                 case "create" -> {
-                    // TODO
+                    RelationsManager.createPlaylist(fields[1]);
                 }
                 case "play" -> {
-                    // TODO
+                    ptui.play(ptui.pickSong(Search.searchSongs(fields[1])));
                 }
                 case "follow" -> {
-                    // TODO
+                    currentUser.addFriend(Search.searchUser(fields[1]));
+                }
+
+                case "unfollow" -> {
+                    currentUser.removeFriend(Search.searchUser(fields[1]));
                 }
                 case "rename" -> {
-                    // TODO
+                    RelationsManager.rename(Search.searchPlaylist(fields[1]), fields[2]);
                 }
-                case "add" -> {
-                    // TODO
+                case "add", "remove" -> {
+                    switch (fields[1].toLowerCase()) {
+                        case "song" -> {
+                            Song song = ptui.pickSong(Search.searchSongs("term"));
+                            Playlist playlist = ptui.pickPlaylist(Search.searchPlaylist(fields[2]));
+
+                            if (fields[0].equalsIgnoreCase("add")) {
+                                RelationsManager.addSong(song, playlist);
+                            } else {
+                                RelationsManager.removeSong(song, playlist);
+                            }
+                        }
+                        case "album" -> {
+                            Album album =
+                                    ptui.pickAlbum(
+                                            Search.searchAlbum(
+                                                    "category", "term", "default", false));
+                            Playlist playlist = ptui.pickPlaylist(Search.searchPlaylist(fields[2]));
+
+                            if (fields[0].equalsIgnoreCase("add")) {
+                                RelationsManager.addAlbum(album, playlist);
+                            } else {
+                                RelationsManager.removeAlbum(album, playlist);
+                            }
+                        }
+                    }
+                    ;
                 }
                 case "list" -> {
-                    // TODO
+                    ptui.list(this.currentUser.getCollections());
                 }
                 case "share" -> {
-                    // TODO
+                    RelationsManager.sharePlaylist(
+                            ptui.pickPlaylist(Search.searchPlaylist(fields[1])),
+                            Search.searchUser(fields[2]));
                 }
                 case "help" -> {
-                    help();
+                    ptui.help();
                 }
 
                 case "quit" -> {
@@ -83,5 +124,4 @@ public class Application {
             System.out.print("> ");
         }
     }
-
 }

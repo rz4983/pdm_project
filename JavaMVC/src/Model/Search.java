@@ -10,9 +10,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Holds all static methods used for searching. Can search:
- */
+/** Holds all static methods used for searching. Can search: */
 public class Search {
     /**
      * Search songs if they appear in the title. Case insensitive.
@@ -25,7 +23,6 @@ public class Search {
     }
 
     /**
-     *
      * @param category category | must be in entity. use Entity.className.class.toString()
      * @param term term in the category's title or equivalent.
      * @param sort null if sorted by song name then artist.
@@ -57,5 +54,10 @@ public class Search {
 
     public static User searchUser(String email) {
         return new User("munson@rit.edu", "munson", 0, 0, "munson", "munson", 0);
+    }
+
+    public static Collection<Album> searchAlbum(
+            String category, String term, String sort, boolean ascending) {
+        return null;
     }
 }
