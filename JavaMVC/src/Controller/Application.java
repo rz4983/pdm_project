@@ -85,9 +85,11 @@ public class Application {
                 }
 
                 case "create" -> {
+
                     RelationsManager.createPlaylist(fields[1]);
                 }
                 case "play" -> {
+
                     ptui.play(ptui.pickSong(Search.searchSongs(fields[1])));
                 }
                 case "follow" -> {

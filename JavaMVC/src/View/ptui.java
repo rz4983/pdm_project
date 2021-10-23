@@ -54,15 +54,50 @@ public class ptui {
         System.out.println("quit   -- Exit the application.");
     }
 
-    public static Playlist pickPlaylist(List<Playlist> searchPlaylist) {
-        return null;
+    public static Playlist pickPlaylist(List<Playlist> playlists) {
+        for (int i = 0; i < playlists.size(); i++) {
+            System.out.println((i + 1) + " -- " + playlists.get(i));
+        }
+
+        while (true) {
+            System.out.print("Choose the index: ");
+            String chosen = in.nextLine();
+            try {
+                int i = Integer.parseInt(chosen);
+                if (i > 0 &&  i <= playlists.size()) {
+                    return playlists.get(i - 1);
+                }
+                System.out.println("Please enter a number between 1 and " + playlists.size());
+            } catch (NumberFormatException er) {
+                System.out.println("Please enter the index.");
+            }
+        }
     }
 
     public static void list(List<Playlist> playlists) {
+        for (int i = 0; i < playlists.size(); i++) {
+            System.out.println((i + 1) + " -- " + playlists.get(i));
+        }
     }
 
     public static Song pickSong(List<Song> songs) {
-        return null;
+        for (int i = 0; i < songs.size(); i++) {
+            System.out.println((i + 1) + " -- " + songs.get(i));
+        }
+
+        while (true) {
+            System.out.print("Choose the index: ");
+            String chosen = in.nextLine();
+            try {
+                int i = Integer.parseInt(chosen);
+                if (i > 0 &&  i <= songs.size()) {
+                    return songs.get(i - 1);
+                }
+                System.out.println("Please enter a number between 1 and " + songs.size());
+            } catch (NumberFormatException er) {
+                System.out.println("Please enter the index.");
+            }
+        }
     }
 
     public static void play(Song song) {
@@ -150,15 +185,33 @@ public class ptui {
      */
     public static Album pickAlbum(List<Album> albums) {
         for (int i = 0; i < albums.size(); i++) {
-
-            System.out.println("" + albums.get(i));
+            System.out.println((i + 1) + " -- " + albums.get(i));
         }
-        return null;
+
+        while (true) {
+            System.out.print("Choose the index: ");
+            String chosen = in.nextLine();
+            try {
+                int i = Integer.parseInt(chosen);
+                if (i > 0 &&  i <= albums.size()) {
+                    return albums.get(i - 1);
+                }
+                System.out.println("Please enter a number between 1 and " + albums.size());
+            } catch (NumberFormatException er) {
+                System.out.println("Please enter the index.");
+            }
+        }
     }
 
     public static void searchAlbums(List<Album> albums) {
+        for (int i = 0; i < albums.size(); i++) {
+            System.out.println((i + 1) + " -- " + albums.get(i));
+        }
     }
 
     public static void searchSongs(List<Song> songs) {
+        for (int i = 0; i < songs.size(); i++) {
+            System.out.println((i + 1) + " -- " + songs.get(i));
+        }
     }
 }
