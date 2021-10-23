@@ -4,6 +4,7 @@ import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.QueryDB.Authentication;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ public class ptui {
 
     public static void help() {
         System.out.println(
-            """
+                """
                         _                                                \s
                       ,´ `.                                              \s
                 ______|___|______________________________________________
@@ -43,11 +44,11 @@ public class ptui {
         System.out.println("follow -- follow <user email>");
         System.out.println("rename -- rename <playlist ID> <new name>");
         System.out.println(
-            "add    -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.."
-                + " [default]>");
+                "add    -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.."
+                        + " [default]>");
         System.out.println(
-            "remove -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.."
-                + " [default]>");
+                "remove -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.."
+                        + " [default]>");
         System.out.println("list   -- list all playlist");
         System.out.println("share  -- share <playlist Name | ID> email");
         System.out.println("help   -- Print this message.");
@@ -64,7 +65,7 @@ public class ptui {
             String chosen = in.nextLine();
             try {
                 int i = Integer.parseInt(chosen);
-                if (i > 0 &&  i <= playlists.size()) {
+                if (i > 0 && i <= playlists.size()) {
                     return playlists.get(i - 1);
                 }
                 System.out.println("Please enter a number between 1 and " + playlists.size());
@@ -90,7 +91,7 @@ public class ptui {
             String chosen = in.nextLine();
             try {
                 int i = Integer.parseInt(chosen);
-                if (i > 0 &&  i <= songs.size()) {
+                if (i > 0 && i <= songs.size()) {
                     return songs.get(i - 1);
                 }
                 System.out.println("Please enter a number between 1 and " + songs.size());
@@ -100,8 +101,7 @@ public class ptui {
         }
     }
 
-    public static void play(Song song) {
-    }
+    public static void play(Song song) {}
 
     /**
      * Get user input for all required fields for creating a user. Asks user for, in this order: 1.
@@ -142,9 +142,15 @@ public class ptui {
 
         while (true) {
             System.out.print("Enter password: ");
-            inputs[2] = new String(System.console().readPassword());
+            inputs[2] =
+                    System.console() != null
+                            ? new String(System.console().readPassword())
+                            : in.nextLine();
             System.out.print("Confirm password: ");
-            String confirmed = new String(System.console().readPassword()); // username
+            String confirmed =
+                    System.console() != null
+                            ? new String(System.console().readPassword())
+                            : in.nextLine();
             if (confirmed.equals(inputs[2])) {
                 break;
             }
@@ -174,7 +180,6 @@ public class ptui {
         inputs[1] = new String(System.console().readPassword());
 
         return inputs;
-
     }
 
     /**
@@ -193,7 +198,7 @@ public class ptui {
             String chosen = in.nextLine();
             try {
                 int i = Integer.parseInt(chosen);
-                if (i > 0 &&  i <= albums.size()) {
+                if (i > 0 && i <= albums.size()) {
                     return albums.get(i - 1);
                 }
                 System.out.println("Please enter a number between 1 and " + albums.size());

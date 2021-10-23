@@ -1,10 +1,10 @@
 package Controller;
 
-import Model.QueryDB.Authentication;
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
+import Model.QueryDB.Authentication;
 import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
 
@@ -85,11 +85,9 @@ public class Application {
                 }
 
                 case "create" -> {
-
                     RelationsManager.createPlaylist(fields[1]);
                 }
                 case "play" -> {
-
                     ptui.play(ptui.pickSong(Search.searchSongs(fields[1])));
                 }
                 case "follow" -> {
