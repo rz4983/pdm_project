@@ -11,7 +11,11 @@ import Model.QueryDB.Search;
 import View.ptui;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Application {
 
@@ -24,6 +28,25 @@ public class Application {
     public static void main(String[] args) {
         Application application = new Application();
         application.mainLoop();
+    }
+
+    private String[] split(String input) {
+        List<String> matchList = new ArrayList<String>();
+        Pattern regex = Pattern.compile("[^\\s\"']+|\"([^\"]*)\"|'([^']*)'");
+        Matcher regexMatcher = regex.matcher(input);
+        while (regexMatcher.find()) {
+            if (regexMatcher.group(1) != null) {
+                // Add double-quoted string without the quotes
+                matchList.add(regexMatcher.group(1));
+            } else if (regexMatcher.group(2) != null) {
+                // Add single-quoted string without the quotes
+                matchList.add(regexMatcher.group(2));
+            } else {
+                // Add unquoted word
+                matchList.add(regexMatcher.group());
+            }
+        }
+        return matchList.toArray(new String[1]);
     }
 
     private void mainLoop() {
@@ -106,7 +129,7 @@ public class Application {
                     ;
                 }
                 case "list" -> {
-                    ptui.list(this.currentUser.getCollections());
+                    ptui.list(this.currentUser.getPlaylists());
                 }
                 case "share" -> {
                     RelationsManager.sharePlaylist(

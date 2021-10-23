@@ -1,6 +1,7 @@
 package Model.Entities;
 
 import java.util.Collection;
+import java.util.List;
 
 public class User {
     private final String email;
@@ -40,7 +41,7 @@ public class User {
         this.userNumFollowers--;
     }
 
-    public Collection<Playlist> getCollections() {
+    public List<Playlist> getPlaylists() {
         // TODO sql query here.
         return null;
     }
