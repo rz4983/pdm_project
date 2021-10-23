@@ -177,7 +177,10 @@ public class ptui {
         inputs[0] = in.nextLine();
 
         System.out.print("Enter password: ");
-        inputs[1] = new String(System.console().readPassword());
+        inputs[1] =
+                System.console() != null
+                        ? new String(System.console().readPassword())
+                        : in.nextLine();
 
         return inputs;
     }
