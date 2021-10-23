@@ -19,7 +19,7 @@ public class Authentication {
      * @return User instance.
      */
     public static User createUser(
-            String username, String password, String email, String firstName, String lastName) {
+        String email, String username, String password, String firstName, String lastName) {
         // TODO Auto-generated method stub
         return null;
     }
