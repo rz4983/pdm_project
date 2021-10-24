@@ -13,4 +13,14 @@ package Model.Entities;
  */
 public class Genre {
 
+    //TODO finish documentation
+    private final String GenreID;
+
+    private final String genreName;
+
+
+    public Genre(String genreID, String genreName) {
+        GenreID = genreID;
+        this.genreName = genreName;
+    }
 }

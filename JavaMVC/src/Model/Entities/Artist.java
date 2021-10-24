@@ -25,7 +25,7 @@ public class Artist {
         this.name = name;
     }
 
-    //TODO accessor methods
+    // TODO accessor methods
 
     /**
      * @return string representation of artist formatted for ptui

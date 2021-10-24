@@ -38,7 +38,7 @@ public class Album {
         this.AlbumReleaseDate = AlbumReleaseDate;
     }
 
-    //TODO accessor methods
+    // TODO accessor methods
 
     /**
      * @return string representation of album formatted for ptui
