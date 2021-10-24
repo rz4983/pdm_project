@@ -14,13 +14,32 @@ package Model.Entities;
 public class Genre {
 
     //TODO finish documentation
+    /** Unique alphanumeric string identifying this genre entity. */
     private final String GenreID;
-
+    /** Non-unique string for the name of this genre entity. */
     private final String genreName;
 
-
+    /**
+     * Constructor called after needed data is queried from database
+     *
+     * @param genreID unique String identifier
+     * @param genreName non-unique String for the name of this artist
+     */
     public Genre(String genreID, String genreName) {
         GenreID = genreID;
         this.genreName = genreName;
+    }
+
+    // TODO accessor methods
+
+    /**
+     * @return string representation of genre formatted for ptui
+     */
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "GenreID='" + GenreID + '\'' +
+                ", genreName='" + genreName + '\'' +
+                '}';
     }
 }
