@@ -19,19 +19,18 @@ public class Artist {
     /**
      * Constructor called after needed data is queried from database
      *
-     * @param name non-unique String for the name of this artist entity
+     * @param name non-unique String name
      */
     Artist(String name) {
         this.name = name;
     }
 
-    // TODO accessor methods
-
     /**
-     * @return string representation of artist formatted for ptui
+     * @return string representation of this artist entity formatted for ptui
      */
     @Override
     public String toString() {
+        //TODO reformat toString()
         return "Artist{" +
                 "name='" + name + '\'' +
                 '}';
