@@ -2,6 +2,7 @@ package Model.Entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Playlist {
     private String playlistID;
@@ -15,5 +16,10 @@ public class Playlist {
     Playlist(String playlistID) {
         // Create all of this by fetching form the database.
         this(playlistID, null);
+    }
+
+    public List<Song> getSongs() {
+        // TODO
+        return null;
     }
 }

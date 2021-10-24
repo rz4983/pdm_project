@@ -7,9 +7,7 @@ import Model.Entities.User;
 import Model.QueryDB.Authentication;
 import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
-
 import View.ptui;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +73,7 @@ public class Application {
                 case "join" -> {
                     String[] info = ptui.join();
                     this.currentUser =
-                            Authentication.createUser(info[0], info[1], info[2], info[3], info[4]);
+                        Authentication.createUser(info[0], info[1], info[2], info[3], info[4]);
                 }
                 case "search" -> {
                     switch (fields[1].toLowerCase()) {
@@ -88,7 +86,12 @@ public class Application {
                     RelationsManager.createPlaylist(fields[1]);
                 }
                 case "play" -> {
-                    ptui.play(ptui.pickSong(Search.searchSongs(fields[1])));
+                    List<Playlist> playlist = Search.searchPlaylist(fields[1]);
+                    if (playlist != null) {
+                        ptui.play(ptui.pickPlaylist(playlist));
+                    } else {
+                        ptui.play(ptui.pickSong(Search.searchSongs(fields[1])));
+                    }
                 }
                 case "follow" -> {
                     currentUser.addFriend(Search.searchUser(fields[1]));
@@ -114,9 +117,9 @@ public class Application {
                         }
                         case "album" -> {
                             Album album =
-                                    ptui.pickAlbum(
-                                            Search.searchAlbum(
-                                                    "category", "term", "default", false));
+                                ptui.pickAlbum(
+                                    Search.searchAlbum(
+                                        "category", "term", "default", false));
                             Playlist playlist = ptui.pickPlaylist(Search.searchPlaylist(fields[2]));
 
                             if (fields[0].equalsIgnoreCase("add")) {
@@ -133,8 +136,8 @@ public class Application {
                 }
                 case "share" -> {
                     RelationsManager.sharePlaylist(
-                            ptui.pickPlaylist(Search.searchPlaylist(fields[1])),
-                            Search.searchUser(fields[2]));
+                        ptui.pickPlaylist(Search.searchPlaylist(fields[1])),
+                        Search.searchUser(fields[2]));
                 }
                 case "help" -> {
                     ptui.help();
