@@ -40,7 +40,7 @@ public class Search {
                             "Some nonsense songID",
                             ThreadLocalRandom.current().nextInt(),
                             "Some nonsense songID",
-                            ThreadLocalRandom.current().nextInt()));
+                            "1970-01-01"));
         }
         return songs;
     }
