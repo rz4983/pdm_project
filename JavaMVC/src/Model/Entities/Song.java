@@ -16,7 +16,7 @@ public class Song {
     private final int length;
     /** The name of the song. */
     private final String title;
-    /** The date the song was released in format yyyy-mm-dd (or yyyy if full date is unavailable) */
+    /** The date the song was released in format yyyy-mm-dd (or yyyy if full date is unavailable). */
     private final String songReleaseDate;
 
     /**

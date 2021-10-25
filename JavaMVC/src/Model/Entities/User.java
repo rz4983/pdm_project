@@ -13,19 +13,19 @@ import java.util.List;
  * @version 2021.10.24.1
  */
 public class User {
-    /** Unique email of the user */
+    /** Unique email of the user. */
     private final String email;
-    /** Unique username of the user */
+    /** Unique username of the user. */
     private final String username;
-    /** Unix time stamp of when the account was created */
+    /** Unix time stamp of when the account was created. */
     private final long creationDate;
-    /** Unix time stamp of when the most recent access time was */
+    /** Unix time stamp of when the most recent access time was. */
     private long lastAccessDate;
-    /** The first name of the user */
+    /** The first name of the user. */
     private final String firstName;
-    /** The last name of the user */
+    /** The last name of the user. */
     private final String lastName;
-    /** The number of users that follows this user */
+    /** The number of users that follows this user. */
     private long userNumFollowers;
 
     /**
