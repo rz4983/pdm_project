@@ -8,18 +8,22 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 class PostgresSSHTest {
+    private final static int lport = 5432;
+    private final static String rhost = "starbug.cs.rit.edu";
+    private final static int rport = 5432;
+    private final static String user = Credentials.USER.toString();
+    private final static String password = Credentials.PASSWORD.toString();
+    private final static String databaseName = "p320_09";
 
-    public static void main(String[] args) throws SQLException {
-        int lport = 5432;
-        String rhost = "starbug.cs.rit.edu";
-        int rport = 5432;
-        String user = Credentials.USER.toString(); // change to your username
-        String password = Credentials.PASSWORD.toString(); // change to your password
-        String databaseName = "p320_09"; // change to your database name
+    private final static String driverName = "org.postgresql.Driver";
+    private static Connection conn = null;
+    private static Session session = null;
 
-        String driverName = "org.postgresql.Driver";
-        Connection conn = null;
-        Session session = null;
+    public static Connection getConn() {
+        return conn;
+    }
+
+    public static void openConn() throws SQLException{
         try {
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
@@ -46,19 +50,19 @@ class PostgresSSHTest {
             conn = DriverManager.getConnection(url, props);
             System.out.println("Database connection established");
 
-            // Do something with the database....
-
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null && !conn.isClosed()) {
-                System.out.println("Closing Database Connection");
-                conn.close();
-            }
-            if (session != null && session.isConnected()) {
-                System.out.println("Closing SSH Connection");
-                session.disconnect();
-            }
+        }
+    }
+
+    public static void closeConn() throws SQLException {
+        if (conn != null && !conn.isClosed()) {
+            System.out.println("Closing Database Connection");
+            conn.close();
+        }
+        if (session != null && session.isConnected()) {
+            System.out.println("Closing SSH Connection");
+            session.disconnect();
         }
     }
 }
