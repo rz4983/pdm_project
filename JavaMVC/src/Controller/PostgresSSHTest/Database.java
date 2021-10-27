@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class PostgresSSHTest {
+class Database {
     private final static int lport = 5432;
     private final static String rhost = "starbug.cs.rit.edu";
     private final static int rport = 5432;
