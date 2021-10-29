@@ -2,9 +2,10 @@ package Model.QueryDB;
 
 import Model.Entities.User;
 
-import java.security.InvalidParameterException;
-
-import javax.naming.AuthenticationException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Authentication {
 
@@ -18,14 +19,36 @@ public class Authentication {
      * @param lastName User's last name
      * @return User instance.
      */
+
+    //private static Connection conn;
+
     public static User createUser(
         String email, String username, String password, String firstName, String lastName) {
         // TODO Auto-generated method stub
+        // TODO call valid user check for values before creating query string
+
+        String QUERY = "INSERT" + " INTO" + " USER" + " VALUES" +
+                " ('" + email + "', '" + username + "', '" + firstName + "', " + lastName + ");";
+
+        // Try statement grabbing connection variable from database.java
+        try (Connection conn = Controller.PostgresSSHTest.Database.getConn()){
+            // Create SQL statement
+            Statement stmt = conn.createStatement();
+
+            // Create Result statement
+            ResultSet rs = stmt.executeQuery(QUERY);
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 
     /**
-     * Check if a username or email is valid is valid
+     * Check if a username or email is valid
      *
      * @param username username to check against usernames | or "" or null to avoid check.
      * @param email email to check against emails | or "" or null to avoid check.
