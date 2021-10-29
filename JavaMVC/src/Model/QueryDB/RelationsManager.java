@@ -24,7 +24,7 @@ public class RelationsManager {
 
     public static void sharePlaylist(Playlist searchPlaylist, User searchUser) {}
 
-    public static void rename(Collection<Playlist> searchPlaylist, String field) {}
+    public static void rename(Playlist searchPlaylist, String field) {}
 
     public static void createPlaylist(String playlistName) {}
 }

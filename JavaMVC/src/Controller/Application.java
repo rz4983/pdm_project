@@ -101,7 +101,7 @@ public class Application {
                     currentUser.removeFriend(Search.searchUser(fields[1]));
                 }
                 case "rename" -> {
-                    RelationsManager.rename(Search.searchPlaylist(fields[1]), fields[2]);
+                    RelationsManager.rename(ptui.pickPlaylist(Search.searchPlaylist(fields[1])), fields[2]);
                 }
                 case "add", "remove" -> {
                     switch (fields[1].toLowerCase()) {
