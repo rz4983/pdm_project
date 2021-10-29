@@ -61,4 +61,11 @@ public class Search {
             String category, String term, String sort, boolean ascending) {
         return null;
     }
+
+    public static List<Song> searchFromAlbum(
+        String term,
+        Album album
+    ) {
+        return new ArrayList<Song>();
+    }
 }
