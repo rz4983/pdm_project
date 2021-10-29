@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-/** Holds all static methods used for searching. Can search: */
+/** Holds all static methods used for searching. Can search. */
 public class Search {
     /**
-     * Search songs if they appear in the title. Case insensitive.
+     * Search songs if they appear in the title. Case-insensitive.
      *
      * @param term
      * @return
@@ -30,8 +30,7 @@ public class Search {
      * @param ascending true if ascending.
      * @return List of songs sorted
      */
-    public static List<Song> searchSongs(
-            String category, String term, String sort, boolean ascending) {
+    public static List<Song> searchSongs(String category, String term, String sort, boolean ascending) {
         // TODO: please write an actual sql query here.
         ArrayList<Song> songs = new ArrayList<Song>();
         for (int i = 0; i < 100; i++) {
@@ -46,6 +45,7 @@ public class Search {
     }
 
     public static List<Playlist> searchPlaylist(String term) {
+        // TODO: please write an actual sql query here.
         ArrayList<Playlist> playlists = new ArrayList<Playlist>();
         for (int i = 0; i < 100; i++) {
             playlists.add(new Playlist("playlistID", "name"));
@@ -54,10 +54,12 @@ public class Search {
     }
 
     public static User searchUser(String email) {
+        // TODO: please write an actual sql query here.
         return new User("munson@rit.edu", "munson", 0, 0, "munson", "munson", 0);
     }
 
     public static List<Album> searchAlbum(
+            // TODO: please write an actual sql query here.
             String category, String term, String sort, boolean ascending) {
         return null;
     }
@@ -68,4 +70,11 @@ public class Search {
     ) {
         return new ArrayList<Song>();
     }
+
+
+    /*
+    String query = "";
+    Statement st = Database.getConn();
+    ResultSet rs = st.executeQuery(query);
+     */
 }
