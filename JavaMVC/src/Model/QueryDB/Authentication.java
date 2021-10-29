@@ -3,11 +3,12 @@ package Model.QueryDB;
 import Model.Entities.User;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Authentication {
+
+    private static SQLException SQLException;
 
     /**
      * Create a user and adds to the database.
@@ -28,7 +29,7 @@ public class Authentication {
         // TODO call valid user check for values before creating query string
 
         String QUERY = "INSERT" + " INTO" + " USER" + " VALUES" +
-                " ('" + email + "', '" + username + "', '" + firstName + "', " + lastName + ");";
+                " ('" + email + "', '" + username + "', '" + password + "', '" + firstName + "', " + lastName + ");";
 
         // Try statement grabbing connection variable from database.java
         try (Connection conn = Controller.PostgresSSHTest.Database.getConn()){
@@ -36,8 +37,12 @@ public class Authentication {
             Statement stmt = conn.createStatement();
 
             // Create Result statement
-            ResultSet rs = stmt.executeQuery(QUERY);
+            boolean returnsResults = stmt.execute(QUERY);
 
+            // Throws sql exception if insert returns a value as it should not
+            if (returnsResults){
+                throw SQLException;
+            }
         }
         catch (SQLException e) {
             e.printStackTrace();
