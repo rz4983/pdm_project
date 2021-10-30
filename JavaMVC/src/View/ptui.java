@@ -5,6 +5,7 @@ import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.QueryDB.Authentication;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -110,7 +111,7 @@ public class ptui {
      *
      * @return A list of string of inputs.
      */
-    public static String[] join() {
+    public static String[] join() throws SQLException {
         String[] inputs = new String[5];
 
         while (true) {

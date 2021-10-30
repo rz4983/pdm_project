@@ -18,9 +18,9 @@ public class User {
     /** Unique username of the user. */
     private final String username;
     /** Unix time stamp of when the account was created. */
-    private final long creationDate;
+    private final String creationDate;
     /** Unix time stamp of when the most recent access time was. */
-    private long lastAccessDate;
+    private String lastAccessDate;
     /** The first name of the user. */
     private final String firstName;
     /** The last name of the user. */
@@ -42,8 +42,8 @@ public class User {
     public User(
             String email,
             String username,
-            long creationDate,
-            long lastAccessDate,
+            String creationDate,
+            String lastAccessDate,
             String firstName,
             String lastName,
             long userNumFollowers) {
@@ -61,7 +61,7 @@ public class User {
      *
      * @param lastAccessDate
      */
-    public void setLastAccessDate(long lastAccessDate) {
+    public void setLastAccessDate(String lastAccessDate) {
         this.lastAccessDate = lastAccessDate;
     }
 

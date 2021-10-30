@@ -55,7 +55,7 @@ public class Search {
 
     public static User searchUser(String email) {
         // TODO: please write an actual sql query here.
-        return new User("munson@rit.edu", "munson", 0, 0, "munson", "munson", 0);
+        return new User("munson@rit.edu", "munson", "0", "0", "munson", "munson", 0);
     }
 
     public static List<Album> searchAlbum(
