@@ -4,8 +4,7 @@ import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
-
-import java.util.Collection;
+import java.sql.*;
 
 /**
  * FIXME This class manages all relation not between user and some other entity. The logic behind
@@ -14,7 +13,35 @@ import java.util.Collection;
  * (current) user and their playlists.
  */
 public class RelationsManager {
-    public static void addSong(Song songID, Playlist playlist) {}
+
+    private static SQLException SQLException;
+
+    // User adds a given song to a given playlist
+    // does not return anything
+    public static void addSong(Song songID, Playlist playlist) throws SQLException {
+        boolean alreadyRelated = false;
+
+        // Query to see if song-playlist relation already exists
+        String checkQ = "SELECT 1" +
+                " FROM \"Contains\"" +
+                " WHERE \"playlistID\" = '" + playlist +
+                "' and \"songID\" = '" + songID + "'";
+        try (Connection conn = Controller.PostgresSSHTest.Database.getConn()) {
+
+        Statement stmt = conn.createStatement();
+
+        alreadyRelated = stmt.execute(checkQ);
+
+        if (!alreadyRelated){
+            String QUERY2 = "INSERT INTO \"Contains\" VALUES ('"
+                    + songID + "', '"
+                    + playlist + "');";
+        }
+
+        } catch (SQLException e) {
+        e.printStackTrace();
+        }
+    }
 
     public static void removeSong(Song songID, Playlist playlist) {}
 
