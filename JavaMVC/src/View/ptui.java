@@ -126,7 +126,7 @@ public class ptui {
         while (true) {
             System.out.print("Enter email: ");
             inputs[0] = in.nextLine(); // username
-            if (Authentication.validUser(null, inputs[1])) {
+            if (!Authentication.validUser(null, inputs[1])) {
                 break;
             }
             System.out.println("Email is used with another account. Try another email.");
@@ -135,7 +135,7 @@ public class ptui {
         while (true) {
             System.out.print("Enter username: ");
             inputs[1] = in.nextLine(); // username
-            if (Authentication.validUser(inputs[0], null)) {
+            if (!Authentication.validUser(inputs[0], null)) {
                 break;
             }
             System.out.println("Username is taken. Try another username.");

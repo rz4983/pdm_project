@@ -20,15 +20,18 @@ public class Playlist {
     /** The name of the playlist. */
     private final String name;
 
+    private final int runtime;
+
     /**
      * Constructor is called after needed data is queried from DB.
      *
      * @param playlistID unique string identifier
      * @param name non-unique string
      */
-    public Playlist(String playlistID, String name) {
+    public Playlist(String playlistID, String name, int runtime) {
         this.playlistID = playlistID;
         this.name = name;
+        this.runtime = runtime;
     }
 
     //TODO helper methods
@@ -41,6 +44,10 @@ public class Playlist {
     public List<Song> getSongs() {
         // TODO
         return null;
+    }
+
+    public int getRuntime() {
+        return runtime;
     }
 
     /**

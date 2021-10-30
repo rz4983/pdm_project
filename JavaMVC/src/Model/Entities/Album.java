@@ -27,7 +27,7 @@ public class Album {
      * @param title non-unique String title
      * @param AlbumReleaseDate String release date in y-m-d or y
      */
-    Album(String AlbumID, String title, String AlbumReleaseDate) {
+    public Album(String AlbumID, String title, String AlbumReleaseDate) {
         this.AlbumID = AlbumID;
         this.title = title;
         this.AlbumReleaseDate = AlbumReleaseDate;

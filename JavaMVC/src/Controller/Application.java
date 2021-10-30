@@ -21,10 +21,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Application {
-    private User currentUser;
+    private static User currentUser;
 
     Application() {
-        this.currentUser = null;
+        currentUser = null;
     }
 
     public static void main(String[] args) throws SQLException {
@@ -39,6 +39,10 @@ public class Application {
         } finally {
             closeConn();
         }
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
     }
 
     private String[] split(String input) {
@@ -94,10 +98,7 @@ public class Application {
                         Authentication.createUser(info[0], info[1], info[2], info[3], info[4]);
                 }
                 case "search" -> {
-                    switch (fields[1].toLowerCase()) {
-                        case "song" -> ptui.searchSongs(Search.searchSongs("term"));
-                        case "album" -> ptui.searchAlbums(Search.searchAlbum("", "", "", true));
-                    }
+                     ptui.searchSongs(Search.searchSongs(fields[1]));
                 }
 
                 case "create" -> {
@@ -136,8 +137,7 @@ public class Application {
                         case "album" -> {
                             Album album =
                                 ptui.pickAlbum(
-                                    Search.searchAlbum(
-                                        "category", "term", "default", false));
+                                    Search.searchAlbum("alname"));
                             Playlist playlist = ptui.pickPlaylist(Search.searchPlaylist(fields[2]));
 
                             if (fields[0].equalsIgnoreCase("add")) {
@@ -150,7 +150,7 @@ public class Application {
                     ;
                 }
                 case "list" -> {
-                    ptui.list(this.currentUser.getPlaylists());
+                    ptui.list(currentUser.getPlaylists());
                 }
                 case "share" -> {
                     RelationsManager.sharePlaylist(

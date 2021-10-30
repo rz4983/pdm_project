@@ -1,5 +1,11 @@
 package Model.Entities;
 
+import Controller.Application;
+import Controller.PostgresSSHTest.Database;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -80,7 +86,7 @@ public class User {
      * @param user
      */
     public void removeFriend(User user) {
-        this.userNumFollowers--;
+        
     }
 
     /**
@@ -88,9 +94,29 @@ public class User {
      *
      * @return
      */
-    public List<Playlist> getPlaylists() {
-        // TODO sql query here.
-        return null;
+    public List<Playlist> getPlaylists() throws SQLException {
+        ArrayList<Playlist> playlists = new ArrayList<>();
+        Statement stmt = Database.getConn().createStatement();
+        ResultSet rs = stmt
+            .executeQuery(
+                "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\""
+                    + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND"
+                    + "      \"Make\".email = '" + email + "''");
+
+        while (rs.next()) {
+            playlists.add(new Playlist(
+                rs.getString("playlistID"),
+                rs.getString("playlistName"),
+                rs.getInt("runtime")
+            ));
+        }
+
+        rs.close();
+        return playlists;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     /**

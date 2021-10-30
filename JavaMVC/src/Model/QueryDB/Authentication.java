@@ -28,13 +28,21 @@ public class Authentication {
 
     //private static Connection conn;
     public static User createUser(
-        String email, String username, String password, String firstName, String lastName) {
+        String email, String username, String password, String firstName, String lastName)
+        throws SQLException {
         // TODO Auto-generated method stub
         // TODO call valid user check for values before creating query string
 
-        String QUERY = "INSERT" + " INTO" + " USER" + " VALUES" +
-            " ('" + email + "', '" + username + "', '" + password + "', '" + firstName + "', "
-            + lastName + ");";
+        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String todaysdate = dateFormat.format(date);
+        System.out.println("Today's date : " + todaysdate);
+
+        String QUERY =
+            "insert into \"User\" values ('" + email + "', '" + username + "', '" + password
+                + "', '" + todaysdate + "', '" + todaysdate + "', '" + firstName + "', '"
+                + lastName + "', 0)";
 
         // Try statement grabbing connection variable from database.java
         try (Connection conn = Controller.PostgresSSHTest.Database.getConn()) {
@@ -52,7 +60,7 @@ public class Authentication {
             e.printStackTrace();
         }
 
-        return null;
+        return login(username, password);
     }
 
     /**
@@ -63,24 +71,26 @@ public class Authentication {
      * @return True if an only if email and username are ok.
      */
     public static boolean validUser(String username, String email) throws SQLException {
+        boolean result = true;
         if (email != null && !email.equals("")) {
             Statement stmt = Database.getConn().createStatement();
             ResultSet rs = stmt
                 .executeQuery("SELECT * FROM \"User\" WHERE \"User\".EMAIL = '" + email + "'");
 
-            if (!rs.next()) {
-                return false;
-            }
+            result = rs.next();
+            rs.close();
         }
 
-        if (username != null && !username.equals("")) {
+        if (result && username != null && !username.equals("")) {
             Statement stmt = Database.getConn().createStatement();
             ResultSet rs = stmt
-                .executeQuery("SELECT * FROM \"User\" WHERE \"User\".USERNAME = '" + username + "'");
+                .executeQuery(
+                    "SELECT * FROM \"User\" WHERE \"User\".USERNAME = '" + username + "'");
 
-            return rs.next();
+            result = rs.next();
+            rs.close();
         }
-        return true;
+        return result;
     }
 
     /**
@@ -94,6 +104,7 @@ public class Authentication {
             .executeQuery("SELECT * FROM \"User\" WHERE \"User\".EMAIL = '" + email + "'");
 
         if (!rs.next()) {
+            rs.close();
             return null;
         }
 
@@ -103,14 +114,25 @@ public class Authentication {
         String todaysdate = dateFormat.format(date);
         System.out.println("Today's date : " + todaysdate);
 
-        return new User(
+        Statement dateUpdater = Database.getConn().createStatement();
+
+        stmt.executeUpdate(
+            "UPDATE \"User\" SET \"lastAccessDate\" = '" + todaysdate + "' WHERE email = '"
+                + email + "'");
+
+        if (!rs.getString("password").equals(password)) return null;
+
+        User user = new User(
             rs.getString("email"),
             rs.getString("username"),
-            rs.getString("password"),
+            password,
             rs.getString("creationDate"),
             rs.getString("lastAccessDate"),
             rs.getString("firstName"),
             rs.getInt("userNumFollowers")
         );
+        rs.close();
+
+        return user;
     }
 }
