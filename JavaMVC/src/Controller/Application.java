@@ -1,5 +1,8 @@
 package Controller;
 
+import static Controller.PostgresSSHTest.Database.closeConn;
+import static Controller.PostgresSSHTest.Database.openConn;
+
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
@@ -9,23 +12,33 @@ import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
 import View.ptui;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Application {
-
     private User currentUser;
 
     Application() {
         this.currentUser = null;
     }
 
-    public static void main(String[] args) {
-        Application application = new Application();
-        application.mainLoop();
+    public static void main(String[] args) throws SQLException {
+        try {
+            openConn();
+            Application application = new Application();
+            application.mainLoop();
+            closeConn();
+        }
+        catch (SQLException ignored){
+            System.out.println(ignored);
+        } finally {
+            closeConn();
+        }
     }
 
     private String[] split(String input) {
@@ -48,10 +61,14 @@ public class Application {
     }
 
     private void mainLoop() {
-        this.getInput(System.in);
+        try {
+            this.getInput(System.in);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
-    private void getInput(InputStream in) {
+    private void getInput(InputStream in) throws SQLException {
         String text = null;
         Scanner scanner = new Scanner(in);
         ptui.help();
@@ -62,6 +79,7 @@ public class Application {
             switch (fields[0].toLowerCase()) {
                 case "login" -> {
                     String[] info = ptui.login();
+                    System.out.println(Arrays.toString(info));
                     if (Authentication.validUser(null, info[0])) {
                         this.currentUser = Authentication.login(info[0], info[1]);
                         // TODO check for null.
