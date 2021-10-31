@@ -4,7 +4,11 @@ import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
-import java.sql.*;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.UUID;
 
 /**
  * FIXME This class manages all relation not between user and some other entity. The logic behind
@@ -14,7 +18,15 @@ import java.sql.*;
  */
 public class RelationsManager {
 
-    private static SQLException SQLException;
+    private static Statement stmt;
+
+    static {
+        try {
+            stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     // User adds a given song to a given playlist
     // does not return anything
@@ -26,32 +38,48 @@ public class RelationsManager {
                 " FROM \"Contains\"" +
                 " WHERE \"playlistID\" = '" + playlist +
                 "' and \"songID\" = '" + songID + "'";
-        try (Connection conn = Controller.PostgresSSHTest.Database.getConn()) {
 
-        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(checkQ);
 
-        alreadyRelated = stmt.execute(checkQ);
+        alreadyRelated = rs.next();
 
-        if (!alreadyRelated){
-            String QUERY2 = "INSERT INTO \"Contains\" VALUES ('"
+        if (!alreadyRelated) {
+            String addSong = "INSERT INTO \"Contains\" VALUES ('"
                     + songID + "', '"
                     + playlist + "');";
-        }
-
-        } catch (SQLException e) {
-        e.printStackTrace();
+            stmt.executeQuery(addSong);
         }
     }
 
-    public static void removeSong(Song songID, Playlist playlist) {}
+    public static void removeSong(Song songID, Playlist playlist) {
+        // check if in
+        // if in -> remove from playlist
+    }
 
-    public static void addAlbum(Album album, Playlist playlist) {}
+    public static void addAlbum(Album album, Playlist playlist) {
 
-    public static void removeAlbum(Album album, Playlist playlist) {}
+    }
 
-    public static void sharePlaylist(Playlist searchPlaylist, User searchUser) {}
+    public static void removeAlbum(Album album, Playlist playlist) {
+    }
 
-    public static void rename(Playlist searchPlaylist, String field) {}
+    public static void sharePlaylist(Playlist searchPlaylist, User searchUser) {
+    }
 
-    public static void createPlaylist(String playlistName) {}
+    public static void rename(Playlist searchPlaylist, String field) {
+
+    }
+
+    public static void createPlaylist(String playlistName) throws SQLException {
+
+
+        String createPlaylist = "INSERT INTO \"Playlist\" VALUES ('"
+                + UUID.randomUUID() + "' , '"
+                + playlistName + "');";
+
+        stmt.execute(createPlaylist);
+
+        System.out.printf("Playlist '%s' has been created%n", playlistName);
+    }
 }
+

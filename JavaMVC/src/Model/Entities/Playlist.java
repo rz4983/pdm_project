@@ -1,7 +1,5 @@
 package Model.Entities;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,6 +44,7 @@ public class Playlist {
         return null;
     }
 
+    // getter
     public int getRuntime() {
         return runtime;
     }

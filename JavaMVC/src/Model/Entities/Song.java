@@ -29,7 +29,7 @@ public class Song {
      */
     public Song(String songID, int length, String title, String songReleaseDate) {
         this.songID = songID;
-        this.length = 0;
+        this.length = length;
         this.title = title;
         this.songReleaseDate = songReleaseDate;
     }
