@@ -69,23 +69,23 @@ public class RelationsManager {
         stmt.execute(query);
     }
 
-    public static void playSong(Song song) {
-
-        String playSong = "INSERT INTO \"Plays\" \n" +
-                "VALUES ('" + Controller.Application.getCurrentUser().getEmail() + "', '" + song.getSongID() + "');";
-
-        try {
-            stmt.execute(playSong);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public static void playSong(Song song) throws SQLException {
+        String playSong = "CALL play_song('" + song.getSongID() + "', '"
+                + Controller.Application.getCurrentUser().getEmail() + "');";
+        stmt.execute(playSong);
     }
 
-    public static void playAlbum(Album album){}
+    public static void playAlbum(Album album) throws SQLException {
+        String playAlbum = "CALL play_album('" + album.getAlbumID() + "', '"
+                + Controller.Application.getCurrentUser().getEmail() + "');";
+        stmt.execute(playAlbum);
+    }
 
-    public static void playPlaylist(Playlist album){}
-
-
+    public static void playPlaylist(Playlist playlist) throws SQLException {
+        String playPlaylist = "CALL play_playlist('" + playlist.getPlaylistID() + "', '"
+                + Controller.Application.getCurrentUser().getEmail() + "');";
+        stmt.execute(playPlaylist);
+    }
 
     public static void createPlaylist(String playlistName) throws SQLException {
         UUID id = UUID.randomUUID();
