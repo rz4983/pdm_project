@@ -5,7 +5,6 @@ import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
@@ -30,11 +29,11 @@ public class RelationsManager {
 
     // User adds a given song to a given playlist
     // does not return anything
-    public static void addSong(Song songID, Playlist playlist) throws SQLException {
-        boolean alreadyRelated = false;
+    public static void addSong(Song song, Playlist playlist) throws SQLException {
+        /*boolean alreadyRelated = false;
 
         // Query to see if song-playlist relation already exists
-        String checkQ = "SELECT 1" +
+        String checkQ = "SELECT *" +
                 " FROM \"Contains\"" +
                 " WHERE \"playlistID\" = '" + playlist +
                 "' and \"songID\" = '" + songID + "'";
@@ -48,7 +47,11 @@ public class RelationsManager {
                     + songID + "', '"
                     + playlist + "');";
             stmt.executeQuery(addSong);
-        }
+        }*/
+        String songID = song.getSongID();
+        String playlistID = playlist.getPlaylistID();
+
+
     }
 
     public static void removeSong(Song songID, Playlist playlist) {
