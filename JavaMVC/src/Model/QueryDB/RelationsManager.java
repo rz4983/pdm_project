@@ -30,12 +30,9 @@ public class RelationsManager {
     // User adds a given song to a given playlist
     // does not return anything
     public static void addSong(Song song, Playlist playlist) throws SQLException {
-
         String songID = song.getSongID();
         String playlistID = playlist.getPlaylistID();
-
         String query = "CALL add_song('" + songID + "', '" + playlistID + "');";
-
     }
 
     public static void removeSong(Song songID, Playlist playlist) {
