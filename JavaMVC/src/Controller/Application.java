@@ -108,7 +108,7 @@ public class Application {
                     // search Song  <term> [--sort=name]
                     String category = fields[1];
                     String term = fields[2];
-                    String sort = fields.length >= 4 ? fields[3] : "song";
+                    String sort = fields.length >= 4 ? fields[3] : "--sort=song";
                     boolean ascending = Character.toString(sort.charAt(7)).equals("-");
 
                     if (!Arrays.asList("genre", "song", "artist", "album")
