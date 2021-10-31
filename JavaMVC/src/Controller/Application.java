@@ -221,9 +221,9 @@ public class Application {
                                 Playlist playlist = null;
                                 List<Song> searchResultSong = null;
                                 if (fields.length == 4) {
-                                    searchResultPlaylist = Search.searchPlaylist(fields[2]);
+                                    searchResultPlaylist = Search.searchPlaylist(fields[3]);
                                     if (searchResultPlaylist.size() == 0) {
-                                        System.out.println("No playlist " + fields[2]);
+                                        System.out.println("No playlist " + fields[3]);
                                         break;
                                     }
                                     playlist =
@@ -231,7 +231,7 @@ public class Application {
                                             .get(0)
                                             : ptui.pickPlaylist(searchResultPlaylist);
                                     searchResultSong = Search
-                                        .searchSongFromPlaylist(playlist, fields[3]);
+                                        .searchSongFromPlaylist(playlist, fields[2]);
                                 }
 
                                 if (fields.length == 3) {
