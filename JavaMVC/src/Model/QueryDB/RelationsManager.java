@@ -69,7 +69,7 @@ public class RelationsManager {
         stmt.execute(query);
     }
 
-    public static void play_song(Song song) {
+    public static void playSong(Song song) {
 
         String playSong = "INSERT INTO \"Plays\" \n" +
                 "VALUES ('" + Controller.Application.getCurrentUser().getEmail() + "', '" + song.getSongID() + "');";
@@ -81,9 +81,9 @@ public class RelationsManager {
         }
     }
 
-    public static void play_album(Album album){}
+    public static void playAlbum(Album album){}
 
-    public static void play_playlist(Playlist album){}
+    public static void playPlaylist(Playlist album){}
 
 
 
