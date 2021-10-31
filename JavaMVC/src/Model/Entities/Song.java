@@ -113,14 +113,12 @@ public class Song {
      * @return TODO
      */
     @Override
-    public String toString() {
+    public String toString()  {
 
         try {
             return String.format("Song: %s -- Artist: %s -- Minutes: %.2f -- Release Date: %s -- Number of plays: %d", title, queryArtist(),
                     length / 1000.0 / 60, songReleaseDate, getNumPlayed());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException ignore) {}
         return "SQL Exception";
     }
 }

@@ -35,7 +35,6 @@ public class Application {
             try {
                 closeConn();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }));
         try {
@@ -51,7 +50,6 @@ public class Application {
             }
             closeConn();
         } catch (SQLException ignored) {
-            System.out.println(ignored);
         } finally {
             closeConn();
         }
@@ -84,7 +82,6 @@ public class Application {
         try {
             this.getInput(System.in);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
@@ -448,14 +445,14 @@ public class Application {
                         }
                         Search.setLimit(Integer.parseInt(fields[1]));
                         System.out.println(
-                            "Each search will now display a maximum of " + fields[1] + "results");
+                            "Each search will now display a maximum of " + fields[1] + " results");
                     }
                     case "help" -> {
                         ptui.help();
                     }
 
                     case "quit" -> {
-                        System.out.println("Exitting session.");
+                        System.out.println("Exiting session.");
                         return;
                     }
                 }
