@@ -97,6 +97,18 @@ public class Song {
         Song.stmt = stmt;
     }
 
+    public int getNumPlayed() throws SQLException {
+        int numPlays = 0;
+        String getCount = "SELECT COUNT(*) FROM \"Plays\" WHERE \"songID\" = '" + this.songID + "';";
+
+        ResultSet rs = stmt.executeQuery(getCount);
+
+        while(rs.next()){
+             numPlays = rs.getInt("count");
+        }
+        return numPlays;
+    }
+
     /**
      * @return TODO
      */
@@ -104,8 +116,8 @@ public class Song {
     public String toString() {
 
         try {
-            return String.format("Song: %s -- Artist: %s -- Minutes: %.2f -- Release Date: %s", title, queryArtist(),
-                    length / 1000.0 / 60, songReleaseDate);
+            return String.format("Song: %s -- Artist: %s -- Minutes: %.2f -- Release Date: %s -- Number of plays: %d", title, queryArtist(),
+                    length / 1000.0 / 60, songReleaseDate, getNumPlayed());
         } catch (SQLException e) {
             e.printStackTrace();
         }
