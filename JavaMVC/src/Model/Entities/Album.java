@@ -1,5 +1,9 @@
 package Model.Entities;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Class representing an Album entity
  *
@@ -12,6 +16,16 @@ package Model.Entities;
  *
  */
 public class Album {
+
+    private static Statement stmt;
+
+    static {
+        try {
+            stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /** Unique alphanumeric String identifying this album entity. */
     private final String AlbumID;
@@ -33,16 +47,33 @@ public class Album {
         this.AlbumReleaseDate = AlbumReleaseDate;
     }
 
+    public String queryArtist() throws SQLException {
+        String checkQ = "Select *" +
+                " FROM \"Create\"" +
+                " WHERE \"songID\" = '" + this.AlbumID + "';";
+
+        ResultSet rs = stmt.executeQuery(checkQ);
+
+        String albumArtist = rs.getNString("artistName");
+
+        if (albumArtist == null){
+            albumArtist = "N/A";
+        }
+
+        return albumArtist;
+    }
+
     /**
      * @return string representation of album formatted for ptui
      */
     @Override
     public String toString() {
-        //TODO reformat toString()
-        return "Album{" +
-                "AlbumID='" + AlbumID + '\'' +
-                ", title='" + title + '\'' +
-                ", AlbumReleaseDate='" + AlbumReleaseDate + '\'' +
-                '}';
+        try {
+            return String.format("Album: %s -- Author: %s -- Release Date: %s", this.title,
+                    queryArtist(), AlbumReleaseDate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "SQL Exception";
     }
 }

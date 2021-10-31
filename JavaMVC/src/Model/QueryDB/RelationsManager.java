@@ -70,6 +70,10 @@ public class RelationsManager {
 
     }
 
+    public static void play(Song song){
+
+    }
+
     public static void createPlaylist(String playlistName) throws SQLException {
 
 
