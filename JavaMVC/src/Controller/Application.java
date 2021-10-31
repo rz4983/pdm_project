@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Application {
+
     private static User currentUser;
 
     Application() {
@@ -33,8 +34,7 @@ public class Application {
             Application application = new Application();
             application.mainLoop();
             closeConn();
-        }
-        catch (SQLException ignored){
+        } catch (SQLException ignored) {
             System.out.println(ignored);
         } finally {
             closeConn();
@@ -85,20 +85,44 @@ public class Application {
                     String[] info = ptui.login();
                     System.out.println(Arrays.toString(info));
                     if (Authentication.validUser(null, info[0])) {
-                        this.currentUser = Authentication.login(info[0], info[1]);
-                        // TODO check for null.
+                        currentUser = Authentication.login(info[0], info[1]);
+                        if (currentUser == null) {
+                            System.out.println("Incorrect password.");
+                            continue;
+                        }
+                        System.out.println("Currently logged in as " + info[0]);
+                    } else {
+                        System.out.println("No user with email " + info[0]);
                     }
                 }
                 case "logout" -> {
-                    this.currentUser = null;
+                    currentUser = null;
                 }
                 case "join" -> {
                     String[] info = ptui.join();
-                    this.currentUser =
+                    currentUser =
                         Authentication.createUser(info[0], info[1], info[2], info[3], info[4]);
+                    System.out.println("Currently logged in as " + info[1]);
                 }
                 case "search" -> {
-                     ptui.searchSongs(Search.searchSongs(fields[1]));
+                    // search Song  <term> [--sort=name]
+                    String category = fields[1];
+                    String term = fields[2];
+                    String sort = fields.length >= 4 ? fields[3] : "song";
+                    boolean ascending = Character.toString(sort.charAt(7)).equals("-");
+
+                    if (!Arrays.asList("genre", "song", "artist", "album")
+                        .contains(category.toLowerCase())) {
+                        System.out.println(
+                            "Category must be one of: \"genre\", \"song\", \"artist\", \"album\"");
+                        continue;
+                    }
+                    if (!sort.matches("\\-\\-sort=\\w+$")) {
+                        System.out.println("Sorting usage: --sort=song");
+                        continue;
+                    }
+                    sort = sort.substring(7 + (ascending ?  0 : 1));
+                    ptui.searchSongs(Search.searchSongs(category, term, sort, ascending));
                 }
 
                 case "create" -> {
@@ -113,20 +137,52 @@ public class Application {
                     }
                 }
                 case "follow" -> {
-                    currentUser.addFriend(Search.searchUser(fields[1]));
+                    User friend = Search.searchUser(fields[1]);
+                    if (friend == null) {
+                        System.out.println("No user with the email " + fields[1]);
+                    } else {
+                        currentUser.addFriend(friend);
+                    }
                 }
 
                 case "unfollow" -> {
-                    currentUser.removeFriend(Search.searchUser(fields[1]));
+                    User friend = Search.searchUser(fields[1]);
+                    if (friend == null) {
+                        System.out.println("No user with the email " + fields[1]);
+                    }
+                    currentUser.removeFriend(friend);
                 }
                 case "rename" -> {
-                    RelationsManager.rename(ptui.pickPlaylist(Search.searchPlaylist(fields[1])), fields[2]);
+                    List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[1]);
+                    if (searchResultPlaylist.size() == 0) {
+                        System.out.println("No playlist " + fields[1]);
+                        continue;
+                    }
+                    Playlist playlist =
+                        searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
+                            : ptui.pickPlaylist(searchResultPlaylist);
+
+                    RelationsManager.rename(playlist, fields[2]);
                 }
                 case "add", "remove" -> {
                     switch (fields[1].toLowerCase()) {
                         case "song" -> {
-                            Song song = ptui.pickSong(Search.searchSongs("term"));
-                            Playlist playlist = ptui.pickPlaylist(Search.searchPlaylist(fields[2]));
+                            List<Song> searchResultSong = Search.searchSongs(fields[2]);
+                            if (searchResultSong.size() == 0) {
+                                System.out.println("No song " + fields[2]);
+                                continue;
+                            }
+                            Song song = searchResultSong.size() == 1 ? searchResultSong.get(0)
+                                : ptui.pickSong(searchResultSong);
+
+                            List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[2]);
+                            if (searchResultPlaylist.size() == 0) {
+                                System.out.println("No playlist " + fields[2]);
+                                continue;
+                            }
+                            Playlist playlist =
+                                searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
+                                    : ptui.pickPlaylist(searchResultPlaylist);
 
                             if (fields[0].equalsIgnoreCase("add")) {
                                 RelationsManager.addSong(song, playlist);
@@ -135,10 +191,22 @@ public class Application {
                             }
                         }
                         case "album" -> {
-                            Album album =
-                                ptui.pickAlbum(
-                                    Search.searchAlbum("alname"));
-                            Playlist playlist = ptui.pickPlaylist(Search.searchPlaylist(fields[2]));
+                            List<Album> searchResultAlbum = Search.searchAlbum(fields[2]);
+                            if (searchResultAlbum.size() == 0) {
+                                System.out.println("No album " + fields[2]);
+                                continue;
+                            }
+                            Album album = searchResultAlbum.size() == 1 ? searchResultAlbum.get(0)
+                                : ptui.pickAlbum(searchResultAlbum);
+
+                            List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[2]);
+                            if (searchResultPlaylist.size() == 0) {
+                                System.out.println("No playlist " + fields[2]);
+                                continue;
+                            }
+                            Playlist playlist =
+                                searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
+                                    : ptui.pickPlaylist(searchResultPlaylist);
 
                             if (fields[0].equalsIgnoreCase("add")) {
                                 RelationsManager.addAlbum(album, playlist);
@@ -153,9 +221,21 @@ public class Application {
                     ptui.list(currentUser.getPlaylists());
                 }
                 case "share" -> {
-                    RelationsManager.sharePlaylist(
-                        ptui.pickPlaylist(Search.searchPlaylist(fields[1])),
-                        Search.searchUser(fields[2]));
+                    List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[2]);
+                    if (searchResultPlaylist.size() == 0) {
+                        System.out.println("No playlist " + fields[1]);
+                        continue;
+                    }
+                    Playlist playlist =
+                        searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
+                            : ptui.pickPlaylist(searchResultPlaylist);
+
+                    User friend = Search.searchUser(fields[2]);
+                    if (friend == null) {
+                        System.out.println("No user with the email " + fields[1]);
+                        continue;
+                    }
+                    RelationsManager.sharePlaylist(playlist, friend);
                 }
                 case "help" -> {
                     ptui.help();

@@ -40,16 +40,14 @@ public class ptui {
         System.out.println("logout -- Logout of the application");
         System.out.println("join   -- Join the platform");
         System.out.println("create -- Create <playlist name>");
-        System.out.println("search -- search <category [song]> <term>");
+        System.out.println("search -- search <category> <term> [--sort=foo]");
         System.out.println("play   -- play <song name | Song ID>");
         System.out.println("follow -- follow <user email>");
         System.out.println("rename -- rename <playlist ID> <new name>");
         System.out.println(
-                "add    -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.."
-                        + " [default]>");
+                "add -- add Album|Song <playlist name> <Album | Song>");
         System.out.println(
-                "remove -- <\"Song\" | \"Album\"> <Category [Song]> <ID | Title> <--sort=Genre|.."
-                        + " [default]>");
+                "remove -- remove Album|Song <playlist name> <Album | Song>");
         System.out.println("list   -- list all playlist");
         System.out.println("share  -- share <playlist Name | ID> email");
         System.out.println("help   -- Print this message.");
