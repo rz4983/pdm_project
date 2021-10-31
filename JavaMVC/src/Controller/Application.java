@@ -320,13 +320,6 @@ public class Application {
                         }
                         switch (fields[1].toLowerCase()) {
                             case "song" -> {
-                                List<Song> searchResultSong = Search.searchSongs(fields[3]);
-                                if (searchResultSong.size() == 0) {
-                                    System.out.println("No song " + fields[3]);
-                                    break;
-                                }
-                                Song song = searchResultSong.size() == 1 ? searchResultSong.get(0)
-                                    : ptui.pickSong(searchResultSong);
 
                                 List<Playlist> searchResultPlaylist = Search
                                     .searchPlaylist(fields[2]);
@@ -337,6 +330,14 @@ public class Application {
                                 Playlist playlist =
                                     searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
                                         : ptui.pickPlaylist(searchResultPlaylist);
+
+                                List<Song> searchResultSong = Search.searchSongFromPlaylist(playlist, fields[3]);
+                                if (searchResultSong.size() == 0) {
+                                    System.out.println("No song " + fields[3]);
+                                    break;
+                                }
+                                Song song = searchResultSong.size() == 1 ? searchResultSong.get(0)
+                                    : ptui.pickSong(searchResultSong);
 
                                 if (fields[0].equalsIgnoreCase("add")) {
                                     RelationsManager.addSong(song, playlist);
