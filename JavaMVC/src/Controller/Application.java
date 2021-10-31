@@ -115,6 +115,13 @@ public class Application {
                     }
                     case "logout" -> {
                         currentUser = null;
+                        System.out.println("Logout successful.");
+                        System.out.println("\nClose session? y/[n]");
+                        String response = scanner.nextLine();
+                        if (response.startsWith("y")) {
+                            System.out.println("Exiting Program");
+                            return;
+                        }
                     }
                     case "join" -> {
                         String[] info = ptui.join();
@@ -136,7 +143,16 @@ public class Application {
                             break;
                         }
                         if (fields.length < 3 || fields.length > 4) {
-                            System.out.println("Invalid usage.");
+                            System.out.println("Usage:"
+                                + "\n\tsearch term"
+                                + "\n\tsearch term --sort=sortCategory"
+                                + "\n\tsearch category term"
+                                + "\n\tsearch category term --sort=sortCategory"
+                                + "\n\tsearch category term --sort=-sortCategory"
+                                + "\n\ncategory may be -- [genre, song, artist, album]"
+                                + "\nsort category may be -- [year, artist, genre, name]"
+                                + "\nsort category may have a minus (-) in front\n\tto indicate descending order."
+                            );
                             break;
                         }
                         // search Song  <term> [--sort=name]
@@ -169,6 +185,9 @@ public class Application {
                     }
                     case "play" -> {
                         if (fields.length != 3 && fields.length != 4) {
+                            System.out.println(
+                                "Usage:\n\tplay song song-name\n\tplay song song-name playlist-name\n\tplay playlist playlist-name"
+                            );
                             break;
                         }
                         switch (fields[1].toLowerCase()) {
@@ -205,8 +224,12 @@ public class Application {
                             }
 
                             case "playlist" -> {
-                                List<Playlist> searchResultPlaylist = Search
-                                    .searchPlaylist(fields[2]);
+                                if (fields.length != 3) {
+                                    System.out.println("Usage: play playlist playlist-name");
+                                    break;
+                                }
+                                    List<Playlist> searchResultPlaylist = Search
+                                        .searchPlaylist(fields[2]);
                                 if (searchResultPlaylist.size() == 0) {
                                     System.out.println("No playlist " + fields[2]);
                                     break;
@@ -220,7 +243,11 @@ public class Application {
                     }
                     case "follow" -> {
                         if (fields.length != 2) {
-                            System.out.println("Invalid usage.");
+                            System.out.println("Usage: follow another-email");
+                            break;
+                        }
+                        if (fields[1] == currentUser.getEmail()) {
+                            System.out.println("Cannot follow yourself.");
                             break;
                         }
                         User friend = Search.searchUser(fields[1]);
@@ -381,6 +408,7 @@ public class Application {
                     }
 
                     case "quit" -> {
+                        System.out.println("Exitting session.");
                         return;
                     }
                 }
