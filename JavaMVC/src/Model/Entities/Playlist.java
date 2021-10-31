@@ -59,7 +59,7 @@ public class Playlist {
         List<Song> songs = new ArrayList<Song>();
 
         String getSongs = "SELECT \"Song\".* FROM \"Song\", \"Contains\" " +
-                "WHERE \"Contains\".\"playlistID\" = '"+ playlistID +"' AND " +
+                "WHERE \"Contains\".\"playlistID\" = '"+ this.playlistID +"' AND " +
                 "      \"Contains\".\"songID\" = \"Song\".\"songID\"";
 
         ResultSet rs = null;
@@ -89,7 +89,7 @@ public class Playlist {
      */
     @Override
     public String toString() {
-        return String.format("Playlist: %s -- Number of songs -- %s -- Runtime %s%n", this.name, getSongs().size(), this.runtime);
+        return String.format("Playlist: %s -- Number of songs %s -- Runtime %s%n", this.name, getSongs().size(), this.runtime);
     }
 
     public String getPlaylistID() {
