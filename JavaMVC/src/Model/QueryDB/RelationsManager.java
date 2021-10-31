@@ -58,10 +58,8 @@ public class RelationsManager {
     }
 
     public static void sharePlaylist(Playlist searchPlaylist, User searchUser) throws SQLException {
-        String sharePlaylist = "INSERT INTO \"Make\" " +
-                "VALUES ('" + searchUser.getEmail() + "', '" + searchPlaylist.getPlaylistID() + "') " +
-                "ON CONFLICT DO NOTHING;";
-
+        String sharePlaylist = "CALL share_playlist('" + searchPlaylist.getPlaylistID() + "', '" +
+                searchUser.getEmail() + "');";
         stmt.execute(sharePlaylist);
     }
 
@@ -71,7 +69,7 @@ public class RelationsManager {
         stmt.execute(query);
     }
 
-    public static void play(Song song) {
+    public static void play_song(Song song) {
 
         String playSong = "INSERT INTO \"Plays\" \n" +
                 "VALUES ('" + Controller.Application.getCurrentUser().getEmail() + "', '" + song.getSongID() + "');";
@@ -82,6 +80,12 @@ public class RelationsManager {
             e.printStackTrace();
         }
     }
+
+    public static void play_album(Album album){}
+
+    public static void play_playlist(Playlist album){}
+
+
 
     public static void createPlaylist(String playlistName) throws SQLException {
         UUID id = UUID.randomUUID();
@@ -99,15 +103,7 @@ public class RelationsManager {
     }
 
     public static void deletePlaylist(Playlist playlist) throws SQLException {
-        String playlistId = playlist.getPlaylistID();
-
-        String deletePlaylist = "DELETE FROM \"Contains\" " +
-                "WHERE \"playlistID\" = '" + playlistId + "'; " +
-                "DELETE FROM \"Make\" " +
-                "WHERE \"playlistID\" = '" + playlistId + "'; " +
-                "DELETE FROM \"Playlist\" WHERE " +
-                "\"playlistID\" = '" + playlistId + "';";
-
+        String deletePlaylist = "CALL delete_playlist('" + playlist.getPlaylistID() + "');";
         stmt.execute(deletePlaylist);
     }
 }
