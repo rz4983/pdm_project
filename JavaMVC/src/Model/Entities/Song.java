@@ -64,13 +64,15 @@ public class Song {
 
         ResultSet rs = stmt.executeQuery(checkQ);
 
-        String albumArtist = rs.getNString("artistName");
-
-        if (albumArtist == null){
-            albumArtist = "N/A";
+        String songArtist = "";
+        while (rs.next()) {
+            songArtist = rs.getString("artistName");
+        }
+        if (songArtist == null || songArtist.equals("")){
+            songArtist = "N/A";
         }
 
-        return albumArtist;
+        return songArtist;
     }
 
     /**
@@ -79,13 +81,11 @@ public class Song {
     @Override
     public String toString() {
 
-
-
-        return "Song{" +
-                "songID='" + songID + '\'' +
-                ", length=" + length +
-                ", title='" + title + '\'' +
-                ", songReleaseDate='" + songReleaseDate + '\'' +
-                '}';
+        try {
+            return String.format("Song: %s -- Artist: %s -- Length: %d -- Release Date: %s", title, queryArtist(), length, songReleaseDate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "SQL Exception";
     }
 }

@@ -54,9 +54,12 @@ public class Album {
 
         ResultSet rs = stmt.executeQuery(checkQ);
 
-        String albumArtist = rs.getNString("artistName");
+        String albumArtist = "";
+        while (rs.next()) {
+             albumArtist = rs.getString("artistName");
+        }
 
-        if (albumArtist == null){
+        if (albumArtist == null || albumArtist.equals("")){
             albumArtist = "N/A";
         }
 
