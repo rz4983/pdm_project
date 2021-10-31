@@ -40,13 +40,13 @@ public class Application {
         try {
             openConn();
 
-//            if (getConn() == null) {
+            if (getConn() == null) {
                 System.out.println("Fatal: could not establish a connection.");
-//            } else {
+            } else {
                 Application application = new Application();
                 application.mainLoop();
 
-//            }
+            }
             closeConn();
         } catch (SQLException ignored) {
             System.out.println(ignored);
@@ -148,6 +148,7 @@ public class Application {
                             System.out.println("Usage:"
                                 + "\n\tsearch term"
                                 + "\n\tsearch term --sort=sortCategory"
+                                + "\n\tsearch term --sort=-sortCategory"
                                 + "\n\tsearch category term"
                                 + "\n\tsearch category term --sort=sortCategory"
                                 + "\n\tsearch category term --sort=-sortCategory"

@@ -37,22 +37,34 @@ public class ptui {
                     '.´
                 """);
 
-        System.out.println("login  -- Show the login prompt");
-        System.out.println("logout -- Logout of the application");
-        System.out.println("join   -- Join the platform");
-        System.out.println("create -- Create <playlist name>");
-        System.out.println("search -- search <category> <term> [--sort=foo]");
-        System.out.println("play   -- play <song name | Song ID>");
-        System.out.println("follow -- follow <user email>");
-        System.out.println("rename -- rename <playlist ID> <new name>");
-        System.out.println(
-            "add -- add Album|Song <playlist name> <Album | Song>");
-        System.out.println(
-            "remove -- remove Album|Song <playlist name> <Album | Song>");
-        System.out.println("list   -- list all playlist");
-        System.out.println("share  -- share <playlist Name | ID> email");
-        System.out.println("help   -- Print this message.");
-        System.out.println("quit   -- Exit the application.");
+        System.out.println("login    -- Show the login prompt");
+        System.out.println("logout   -- Logout of the application");
+        System.out.println("join     -- Join the platform");
+        System.out.println("create   -- create playlist-name");
+        System.out.println("delete   -- delete playlist-name");
+        System.out.println("share    -- share playlist-name another-email");
+        System.out.println("play     -- " +
+            "\n\t\tplay song song-name\n\t\tplay song song-name playlist-name\n\t\tplay playlist playlist-name");
+        System.out.println("follow   -- follow another-email");
+        System.out.println("unfollow -- unfollow another-email");
+        System.out.println("rename   -- rename <playlist ID> <new name>");
+        System.out.println("add      -- \n\t\tadd song playlist-name song-name\n\t\tadd album playlist-name album-name");
+        System.out.println("remove   -- \n\t\tremove song playlist-name song-name\n\t\tremove album playlist-name album-name");
+        System.out.println("list     -- \n\t\tlist\n\t\tlist playlist-name");
+        System.out.println("search   -- "
+            + "\n\t\tsearch term"
+            + "\n\t\tsearch term --sort=sortCategory"
+            + "\n\t\tsearch term --sort=-sortCategory"
+            + "\n\t\tsearch category term"
+            + "\n\t\tsearch category term --sort=sortCategory"
+            + "\n\t\tsearch category term --sort=-sortCategory"
+            + "\n\t\tcategory may be -- [genre, song, artist, album]"
+            + "\n\t\tsort category may be -- [year, artist, genre, name]"
+            + "\n\t\tsort category may have a minus (-) in front"
+            + "\n\t\tto indicate descending order."
+        );
+        System.out.println("help     -- Print this message.");
+        System.out.println("quit     -- Exit the application.");
     }
 
     public static Playlist pickPlaylist(List<Playlist> playlists) {
@@ -101,7 +113,6 @@ public class ptui {
         }
     }
 
-
     /**
      * Get user input for all required fields for creating a user. Asks user for, in this order: 1.
      * Username -- Must not already exist 2. Email -- Must not already exist 3. Password -- read
@@ -113,21 +124,22 @@ public class ptui {
         String[] inputs = new String[5];
 
         while (true) {
-            while (true) {
-                Pattern VALID_EMAIL_ADDRESS_REGEX =
-                    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-                        Pattern.CASE_INSENSITIVE);
-                System.out.print("Enter email: ");
-                inputs[0] = in.nextLine(); // username
-                if (!VALID_EMAIL_ADDRESS_REGEX.matcher(inputs[0]).find()) {
-                    System.out.println("Use an actual email.");
-                    continue;
-                }
-                if (!Authentication.validUser(null, inputs[0])) {
-                    break;
-                }
-                System.out.println("Email is used with another account. Try another email.");
+            Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile(
+                    "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            System.out.print("Enter email: ");
+            inputs[0] = in.nextLine(); // username
+            if (!VALID_EMAIL_ADDRESS_REGEX.matcher(inputs[0]).find()) {
+                System.out.println("Use an actual email.");
+                continue;
             }
+            if (!Authentication.validUser(null, inputs[0])) {
+                break;
+            }
+            System.out.println("Email is used with another account. Try another email.");
+        }
+        while (true) {
+
             System.out.print("Enter username: ");
             inputs[1] = in.nextLine(); // username
             if (!Authentication.validUser(inputs[1], null)) {
@@ -170,6 +182,7 @@ public class ptui {
         String[] inputs = new String[2];
 
         System.out.print("Enter email: ");
+        System.out.println(in.hasNextLine());
         inputs[0] = in.nextLine();
 
         System.out.print("Enter password: ");
@@ -224,7 +237,6 @@ public class ptui {
         for (int i = 0; i < songs.size(); i++) {
             System.out.println("Now playing: " + " -- " + (i + 1) + " -- " + songs.get(i));
             RelationsManager.play(songs.get(i));
-
         }
     }
 
