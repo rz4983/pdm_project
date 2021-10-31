@@ -287,7 +287,7 @@ public class Application {
                             System.out.println("Usage: follow another-email");
                             break;
                         }
-                        if (fields[1] == currentUser.getEmail()) {
+                        if (fields[1].equals(currentUser.getEmail())) {
                             System.out.println("Cannot follow yourself.");
                             break;
                         }
