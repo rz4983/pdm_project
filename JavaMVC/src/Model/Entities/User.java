@@ -97,9 +97,9 @@ public class User {
         Statement stmt = Database.getConn().createStatement();
         ResultSet rs = stmt
             .executeQuery(
-                "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\""
-                    + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND"
-                    + "      \"Make\".email = '" + email + "''");
+                "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\" WHERE "
+                    + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND "
+                    + "      \"Make\".email = '" + email + "'");
 
         while (rs.next()) {
             playlists.add(new Playlist(
