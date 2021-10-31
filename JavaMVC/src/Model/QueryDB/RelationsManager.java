@@ -70,5 +70,8 @@ public class RelationsManager {
 
         System.out.printf("Playlist '%s' has been created%n", playlistName);
     }
+
+    public static void deletePlaylist(Playlist playlist) {
+    }
 }
 

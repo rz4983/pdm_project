@@ -39,12 +39,14 @@ public class Application {
         }));
         try {
             openConn();
-            if (getConn() == null) {
+
+//            if (getConn() == null) {
                 System.out.println("Fatal: could not establish a connection.");
-            } else {
+//            } else {
                 Application application = new Application();
                 application.mainLoop();
-            }
+
+//            }
             closeConn();
         } catch (SQLException ignored) {
             System.out.println(ignored);
@@ -116,9 +118,9 @@ public class Application {
                     case "logout" -> {
                         currentUser = null;
                         System.out.println("Logout successful.");
-                        System.out.println("\nClose session? y/[n]");
+                        System.out.print("\nClose session? y/[n]: ");
                         String response = scanner.nextLine();
-                        if (response.startsWith("y")) {
+                        if (response != null && response.toLowerCase().startsWith("y")) {
                             System.out.println("Exiting Program");
                             return;
                         }
@@ -151,7 +153,8 @@ public class Application {
                                 + "\n\tsearch category term --sort=-sortCategory"
                                 + "\n\ncategory may be -- [genre, song, artist, album]"
                                 + "\nsort category may be -- [year, artist, genre, name]"
-                                + "\nsort category may have a minus (-) in front\n\tto indicate descending order."
+                                + "\nsort category may have a minus (-) in front"
+                                +   "\n\tto indicate descending order."
                             );
                             break;
                         }
@@ -173,6 +176,24 @@ public class Application {
                         }
                         sort = sort.substring(7 + (ascending ? 0 : 1));
                         ptui.searchSongs(Search.searchSongs(category, term, sort, ascending));
+                    }
+                    case "delete" -> {
+                        if (fields.length != 2) {
+                            System.out.println("Usage: delete playlist-name");
+                            break;
+                        }
+                        List<Playlist> searchResultPlaylist = Search
+                            .searchPlaylist(fields[2]);
+                        if (searchResultPlaylist.size() == 0) {
+                            System.out.println("No playlist " + fields[2]);
+                            break;
+                        }
+                        Playlist playlist =
+                            searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
+                                : ptui.pickPlaylist(searchResultPlaylist);
+
+                        RelationsManager.deletePlaylist(playlist);
+                        System.out.println("Deleted playlist.");
                     }
 
                     case "create" -> {
@@ -228,8 +249,8 @@ public class Application {
                                     System.out.println("Usage: play playlist playlist-name");
                                     break;
                                 }
-                                    List<Playlist> searchResultPlaylist = Search
-                                        .searchPlaylist(fields[2]);
+                                List<Playlist> searchResultPlaylist = Search
+                                    .searchPlaylist(fields[2]);
                                 if (searchResultPlaylist.size() == 0) {
                                     System.out.println("No playlist " + fields[2]);
                                     break;
@@ -259,7 +280,7 @@ public class Application {
                     }
                     case "unfollow" -> {
                         if (fields.length != 2) {
-                            System.out.println("Invalid usage.");
+                            System.out.println("Usage: unfollow another-email");
                             break;
                         }
                         User following = Search.searchUser(fields[1]);
@@ -272,7 +293,7 @@ public class Application {
                     }
                     case "rename" -> {
                         if (fields.length != 3) {
-                            System.out.println("Invalid Usage.");
+                            System.out.println("Usage: rename playlist-name new-name");
                             break;
                         }
                         List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[1]);

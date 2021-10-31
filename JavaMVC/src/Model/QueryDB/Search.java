@@ -42,8 +42,12 @@ public class Search {
      */
     public static List<Song> searchSongs(String category, String term, String sort,
         boolean ascending) throws SQLException {
+        boolean artistReq = sort.equalsIgnoreCase("artist");
         String orderBy = "order by " + switch (sort.toLowerCase()) {
-            default -> "\"Song\".\"title\" ";
+            default -> {
+                artistReq = true;
+                yield "\"Song\".\"title\",  \"Artist\".\"artistName\" ";
+            }
             case "artist" -> "\"Artist\".\"artistName\" ";
             case "genre" -> "\"Genre\".\"genreName\" ";
             case "year" -> "\"Song\".\"songReleaseDate\" ";
@@ -51,20 +55,20 @@ public class Search {
 
         String query = switch (category.toLowerCase()) {
             case "genre" -> "SELECT \"Song\".* FROM \"Song\", \"SongGNR\", \"Genre\""
-                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
+                + (artistReq ? ", \"Artist\", \"Compose\" " : "")
                 + " WHERE LOWER(\"Genre\".\"genreName\") = LOWER('" + term + "') "
                 + "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
                 + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\""
-                + (sort.equalsIgnoreCase("artist") ?
+                + (artistReq ?
                 " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
                     + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "");
 
             case "song" -> "SELECT \"Song\".* FROM \"Song\""
-                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
+                + (artistReq ? ", \"Artist\", \"Compose\" " : "")
                 + (sort.equalsIgnoreCase("genre") ? ", \"Genre\", \"SongGNR\" " : "")
                 + "     WHERE"
                 + "     \"Song\".title ILIKE '%" + term + "%'"
-                + (sort.equalsIgnoreCase("artist") ?
+                + (artistReq ?
                 " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
                     + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
                 + (sort.equalsIgnoreCase("genre") ?
@@ -81,12 +85,12 @@ public class Search {
                     + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ");
 
             case "album" -> "SELECT \"Song\".* FROM \"Song\", \"ComposedOf\", \"Album\""
-                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
+                + (artistReq ? ", \"Artist\", \"Compose\" " : "")
                 + (sort.equalsIgnoreCase("genre") ? ", \"Genre\", \"SongGNR\" " : "")
                 + " WHERE \"Album\".\"albumName\" ilike '%" + term + "%' "
                 + "   and \"Album\".\"albumID\" = \"ComposedOf\".\"albumID\""
                 + "   and \"Song\".\"songID\" = \"ComposedOf\".\"songID\" "
-                + (sort.equalsIgnoreCase("artist") ?
+                + (artistReq ?
                 " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
                     + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
                 + (sort.equalsIgnoreCase("genre") ?
