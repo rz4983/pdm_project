@@ -183,9 +183,9 @@ public class Application {
                             break;
                         }
                         List<Playlist> searchResultPlaylist = Search
-                            .searchPlaylist(fields[2]);
+                            .searchPlaylist(fields[1]);
                         if (searchResultPlaylist.size() == 0) {
-                            System.out.println("No playlist " + fields[2]);
+                            System.out.println("No playlist " + fields[1]);
                             break;
                         }
                         Playlist playlist =
