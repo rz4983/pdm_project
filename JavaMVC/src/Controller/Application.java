@@ -306,7 +306,7 @@ public class Application {
                     }
                     case "list" -> {
                         if (fields.length == 2) {
-                            List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[2]);
+                            List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[1]);
                             if (searchResultPlaylist.size() == 0) {
                                 System.out.println("No playlist " + fields[1]);
                                 break;
@@ -316,7 +316,7 @@ public class Application {
                                     : ptui.pickPlaylist(searchResultPlaylist);
                             ptui.searchSongs(playlist.getSongs());
                         }
-                        ptui.list(currentUser.getPlaylists());
+                        else ptui.list(currentUser.getPlaylists());
                     }
                     case "share" -> {
                         if (fields.length != 3) {
