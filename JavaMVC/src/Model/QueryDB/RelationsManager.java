@@ -103,12 +103,10 @@ public class RelationsManager {
 
         String deletePlaylist = "DELETE FROM \"Contains\" " +
                 "WHERE \"playlistID\" = '" + playlistId + "'; " +
-                " " +
-                "DELETE FROM \"Playlist\" WHERE " +
-                "\"playlistID\" = '" + playlistId + "'; " +
-                " " +
                 "DELETE FROM \"Make\" " +
-                "WHERE \"playlistID\" = '" + playlistId + "';";
+                "WHERE \"playlistID\" = '" + playlistId + "'; " +
+                "DELETE FROM \"Playlist\" WHERE " +
+                "\"playlistID\" = '" + playlistId + "';";
 
         stmt.execute(deletePlaylist);
     }
