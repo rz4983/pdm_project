@@ -8,6 +8,7 @@ import Model.QueryDB.RelationsManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ptui {
 
@@ -113,9 +114,13 @@ public class ptui {
 
         while (true) {
             while (true) {
+                Pattern VALID_EMAIL_ADDRESS_REGEX =
+                    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+                        Pattern.CASE_INSENSITIVE);
                 System.out.print("Enter email: ");
                 inputs[0] = in.nextLine(); // username
-                if (!Authentication.validUser(null, inputs[0])) {
+                if (VALID_EMAIL_ADDRESS_REGEX.matcher(inputs[0]).find() && !Authentication
+                    .validUser(null, inputs[0])) {
                     break;
                 }
                 System.out.println("Email is used with another account. Try another email.");
