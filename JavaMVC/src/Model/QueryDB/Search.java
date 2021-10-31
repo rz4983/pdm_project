@@ -190,12 +190,14 @@ public class Search {
         throws SQLException {
         ArrayList<Song> songs = new ArrayList<>();
         Statement stmt = Database.getConn().createStatement();
-        String query = "SELECT \"Song\".* FROM \"Song\", \"Make\", \"Contains\", \"User\""
-            + " WHERE \"playlistName\" ILIKE '%" + playlist.getPlaylistID() + "%' AND"
-            + "      \"Make\".\"playlistID\" = \"Contains\".\"playlistID\" AND"
-            + "      \"User\".email = \"Make\".email AND"
-            + "      \"Contains\".\"songID\" = \"Song\".\"songID\" AND"
-            + "      \"User\".email = '" + Application.getCurrentUser().getEmail() + "'";
+        String query =
+            "SELECT \"Song\".* FROM \"Song\", \"Make\", \"Contains\", \"User\" "
+                + " WHERE  \"Make\".\"playlistID\" = \"Contains\".\"playlistID\" AND"
+                + "        \"Make\".\"playlistID\" = '" + playlist.getPlaylistID() + "' AND"
+                + "      \"User\".email = \"Make\".email AND"
+                + "      \"Song\".title ILIKE '%" + term + "%' AND"
+                + "      \"Song\".\"songID\" = \"Contains\".\"songID\" AND"
+                + "      \"User\".email = '" + Application.getCurrentUser().getEmail() + "'";
 
         ResultSet rs = stmt
             .executeQuery(query);
