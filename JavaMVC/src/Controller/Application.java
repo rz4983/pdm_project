@@ -30,6 +30,13 @@ public class Application {
     }
 
     public static void main(String[] args) throws SQLException {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                closeConn();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }));
         try {
             openConn();
             Application application = new Application();
