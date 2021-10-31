@@ -3,6 +3,8 @@ package Model.Entities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing an Album entity
@@ -28,7 +30,7 @@ public class Album {
     }
 
     /** Unique alphanumeric String identifying this album entity. */
-    private final String AlbumID;
+    private final String albumID;
     /** Non-unique String for the title of this album entity. */
     private final String title;
     /** String in format y-m-d or just y */
@@ -37,12 +39,12 @@ public class Album {
     /**
      * Constructor called after needed data is queried from database
      *
-     * @param AlbumID unique String identifier
+     * @param albumID unique String identifier
      * @param title non-unique String title
      * @param AlbumReleaseDate String release date in y-m-d or y
      */
-    public Album(String AlbumID, String title, String AlbumReleaseDate) {
-        this.AlbumID = AlbumID;
+    public Album(String albumID, String title, String AlbumReleaseDate) {
+        this.albumID = albumID;
         this.title = title;
         this.AlbumReleaseDate = AlbumReleaseDate;
     }
@@ -56,7 +58,7 @@ public class Album {
     }
 
     public String getAlbumID() {
-        return AlbumID;
+        return albumID;
     }
 
     public String getTitle() {
@@ -68,7 +70,7 @@ public class Album {
     }
 
     public String queryArtist() throws SQLException {
-        String checkQ = "Select get_album_artist('" + this.AlbumID + "')';";
+        String checkQ = "Select get_album_artist('" + this.albumID + "')';";
 
         ResultSet rs = stmt.executeQuery(checkQ);
 
@@ -82,6 +84,36 @@ public class Album {
         }
 
         return albumArtist;
+    }
+
+    public List<Song> getSongs(){
+
+        List<Song> songs = new ArrayList<Song>();
+
+        String getSongs = "SELECT \"Song\".* FROM \"Song\", \"ComposedOf\" " +
+                "WHERE \"ComposedOf\".\"albumID\" = '"+ this.albumID +"' AND " +
+                "      \"ComposedOf\".\"songID\" = \"Song\".\"songID\"";
+
+        ResultSet rs = null;
+        // assign to result set
+        try {
+            rs = stmt.executeQuery(getSongs);
+
+            // loop through and make song entities and add to new list
+            while (rs.next()){
+                Song newSong = new Song(rs.getString("songID"),
+                        rs.getInt("length"),
+                        rs.getString("title"),
+                        rs.getString("songReleaseDate"));
+
+                songs.add(newSong);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // return list
+        return songs;
     }
 
     /**
