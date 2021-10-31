@@ -50,7 +50,7 @@ public class Album {
     public String queryArtist() throws SQLException {
         String checkQ = "Select *" +
                 " FROM \"Create\"" +
-                " WHERE \"songID\" = '" + this.AlbumID + "';";
+                " WHERE \"albumID\" = '" + this.AlbumID + "';";
 
         ResultSet rs = stmt.executeQuery(checkQ);
 

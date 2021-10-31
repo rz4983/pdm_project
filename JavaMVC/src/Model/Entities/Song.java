@@ -1,5 +1,9 @@
 package Model.Entities;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Class representing a song entity in DB.
  *
@@ -18,6 +22,16 @@ public class Song {
     private final String title;
     /** The date the song was released in format yyyy-mm-dd (or yyyy if full date is unavailable). */
     private final String songReleaseDate;
+
+    private static Statement stmt;
+
+    static {
+        try {
+            stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Constructor is called after needed data from DB is queried.
@@ -43,11 +57,30 @@ public class Song {
         // mark song as played
     }
 
+    public String queryArtist() throws SQLException {
+        String checkQ = "Select *" +
+                " FROM \"Compose\"" +
+                " WHERE \"songID\" = '" + this.songID + "';";
+
+        ResultSet rs = stmt.executeQuery(checkQ);
+
+        String albumArtist = rs.getNString("artistName");
+
+        if (albumArtist == null){
+            albumArtist = "N/A";
+        }
+
+        return albumArtist;
+    }
+
     /**
      * @return TODO
      */
     @Override
     public String toString() {
+
+
+
         return "Song{" +
                 "songID='" + songID + '\'' +
                 ", length=" + length +
