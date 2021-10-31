@@ -42,6 +42,7 @@ public class Application {
 
             if (getConn() == null) {
                 System.out.println("Fatal: could not establish a connection.");
+                main(new String[]{});
             } else {
                 Application application = new Application();
                 application.mainLoop();
