@@ -442,7 +442,7 @@ public class Application {
                     }
 
                     case "limit" -> {
-                        if (fields.length != 2 || !fields[1].matches("//d+")) {
+                        if (fields.length != 2 || !fields[1].matches("\\d+")) {
                             System.out.println("Usage: limit number");
                             break;
                         }
