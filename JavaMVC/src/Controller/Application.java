@@ -1,8 +1,5 @@
 package Controller;
 
-import static Controller.PostgresSSHTest.Database.closeConn;
-import static Controller.PostgresSSHTest.Database.openConn;
-
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
@@ -11,6 +8,7 @@ import Model.QueryDB.Authentication;
 import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
 import View.ptui;
+
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,6 +17,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static Controller.PostgresSSHTest.Database.closeConn;
+import static Controller.PostgresSSHTest.Database.openConn;
 
 public class Application {
 
