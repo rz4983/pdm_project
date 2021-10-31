@@ -48,15 +48,13 @@ public class Album {
     }
 
     public String queryArtist() throws SQLException {
-        String checkQ = "Select *" +
-                " FROM \"Create\"" +
-                " WHERE \"albumID\" = '" + this.AlbumID + "';";
+        String checkQ = "Select get_album_artist('" + this.AlbumID + "')';";
 
         ResultSet rs = stmt.executeQuery(checkQ);
 
         String albumArtist = "";
         while (rs.next()) {
-             albumArtist = rs.getString("artistName");
+             albumArtist = rs.getString("get_album_artist");
         }
 
         if (albumArtist == null || albumArtist.equals("")){
