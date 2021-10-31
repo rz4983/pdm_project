@@ -47,6 +47,26 @@ public class Album {
         this.AlbumReleaseDate = AlbumReleaseDate;
     }
 
+    public static Statement getStmt() {
+        return stmt;
+    }
+
+    public static void setStmt(Statement stmt) {
+        Album.stmt = stmt;
+    }
+
+    public String getAlbumID() {
+        return AlbumID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAlbumReleaseDate() {
+        return AlbumReleaseDate;
+    }
+
     public String queryArtist() throws SQLException {
         String checkQ = "Select get_album_artist('" + this.AlbumID + "')';";
 
