@@ -30,27 +30,11 @@ public class RelationsManager {
     // User adds a given song to a given playlist
     // does not return anything
     public static void addSong(Song song, Playlist playlist) throws SQLException {
-        /*boolean alreadyRelated = false;
 
-        // Query to see if song-playlist relation already exists
-        String checkQ = "SELECT *" +
-                " FROM \"Contains\"" +
-                " WHERE \"playlistID\" = '" + playlist +
-                "' and \"songID\" = '" + songID + "'";
-
-        ResultSet rs = stmt.executeQuery(checkQ);
-
-        alreadyRelated = rs.next();
-
-        if (!alreadyRelated) {
-            String addSong = "INSERT INTO \"Contains\" VALUES ('"
-                    + songID + "', '"
-                    + playlist + "');";
-            stmt.executeQuery(addSong);
-        }*/
         String songID = song.getSongID();
         String playlistID = playlist.getPlaylistID();
 
+        String query = "CALL add_song('" + songID + "', '" + playlistID + "');";
 
     }
 
