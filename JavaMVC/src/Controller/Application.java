@@ -157,7 +157,7 @@ public class Application {
                                 + "\n\ncategory may be -- [genre, song, artist, album]"
                                 + "\nsort category may be -- [year, artist, genre, name]"
                                 + "\nsort category may have a minus (-) in front"
-                                +   "\n\tto indicate descending order."
+                                + "\n\tto indicate descending order."
                             );
                             break;
                         }
@@ -331,7 +331,9 @@ public class Application {
                                     searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
                                         : ptui.pickPlaylist(searchResultPlaylist);
 
-                                List<Song> searchResultSong = Search.searchSongFromPlaylist(playlist, fields[3]);
+                                List<Song> searchResultSong = fields[0].equals("remove") ? Search
+                                    .searchSongFromPlaylist(playlist, fields[3])
+                                    : Search.searchSongs(fields[3]);
                                 if (searchResultSong.size() == 0) {
                                     System.out.println("No song " + fields[3]);
                                     break;
