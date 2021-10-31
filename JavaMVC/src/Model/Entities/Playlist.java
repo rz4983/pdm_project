@@ -40,13 +40,15 @@ public class Playlist {
      * @return
      */
     public List<Song> getSongs() {
-        // TODO
-        return null;
-    }
 
-    // getter
-    public int getRuntime() {
-        return runtime;
+        String query = "SELECT \"Song\".* FROM \"Song\", \"Contains\" " +
+                "WHERE \"Contains\".\"playlistID\" = '"+ playlistID +"' AND " +
+                "      \"Contains\".\"songID\" = \"Song\".\"songID\"";
+        // assign to result set
+        // loop through and make song entities and add to new list
+
+        // return list
+        return null;
     }
 
     /**
@@ -54,10 +56,7 @@ public class Playlist {
      */
     @Override
     public String toString() {
-        return "Playlist{" +
-                "playlistID='" + playlistID + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return String.format("Playlist: %s -- Number of songs -- %s -- Runtime %s%n", this.name, getSongs().size(), this.runtime);
     }
 
     public String getPlaylistID() {
