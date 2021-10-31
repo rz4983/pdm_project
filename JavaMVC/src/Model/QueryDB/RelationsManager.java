@@ -1,10 +1,10 @@
 package Model.QueryDB;
 
+import Controller.Application;
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
@@ -59,7 +59,7 @@ public class RelationsManager {
 
     }
 
-    public static void play(Song song){
+    public static void play(Song song) {
 
         String playSong = "INSERT INTO \"Plays\" \n" +
                 "VALUES ('" + Controller.Application.getCurrentUser().getEmail() + "', '" + song.getSongID() + "');";
@@ -72,11 +72,14 @@ public class RelationsManager {
     }
 
     public static void createPlaylist(String playlistName) throws SQLException {
-
+        UUID id = UUID.randomUUID();
 
         String createPlaylist = "INSERT INTO \"Playlist\" VALUES ('"
-                + UUID.randomUUID() + "' , '"
-                + playlistName + "');";
+            + id + "' , '"
+            + playlistName + "');"
+            + " INSERT INTO \"Make\" VALUES ('" + Application.getCurrentUser().getEmail() + "', '"
+            + id +
+            "'); ";
 
         stmt.execute(createPlaylist);
 
