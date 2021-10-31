@@ -1,5 +1,9 @@
 package Model.Entities;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +17,17 @@ import java.util.List;
  * @version 2021.10.24.1
  */
 public class Playlist {
+
+    private static Statement stmt;
+
+    static {
+        try {
+            stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /** The unique alphanumeric string that identifies this playlist. */
     private final String playlistID;
     /** The name of the playlist. */
@@ -39,16 +54,34 @@ public class Playlist {
      *
      * @return
      */
-    public List<Song> getSongs() {
+    public List<Song> getSongs(){
 
-        String query = "SELECT \"Song\".* FROM \"Song\", \"Contains\" " +
+        List<Song> songs = new ArrayList<Song>();
+
+        String getSongs = "SELECT \"Song\".* FROM \"Song\", \"Contains\" " +
                 "WHERE \"Contains\".\"playlistID\" = '"+ playlistID +"' AND " +
                 "      \"Contains\".\"songID\" = \"Song\".\"songID\"";
+
+        ResultSet rs = null;
         // assign to result set
-        // loop through and make song entities and add to new list
+        try {
+             rs = stmt.executeQuery(getSongs);
+
+             // loop through and make song entities and add to new list
+             while (rs.next()){
+                Song newSong = new Song(rs.getString("songID"),
+                        rs.getInt("length"),
+                        rs.getString("title"),
+                        rs.getString("songReleaseDate"));
+
+                songs.add(newSong);
+             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         // return list
-        return null;
+        return songs;
     }
 
     /**
