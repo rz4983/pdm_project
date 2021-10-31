@@ -52,11 +52,11 @@ public class Search {
                 + orderBy
                 + " LIMIT 100";
 
-            case "song" -> "SELECT * FROM \"Song\""
+            case "song" -> "SELECT \"Song\".* FROM \"Song\""
                 + (sort.equalsIgnoreCase("artist") ? ", \"Artist\"" : "")
                 + (sort.equalsIgnoreCase("genre") ? ", \"Genre\"" : "")
                 + "     WHERE"
-                + "     title LIKE '%" + term + "%'"
+                + "     \"Song\".title LIKE '%" + term + "%'"
                 + orderBy
                 + " LIMIT 100";
 
@@ -104,9 +104,9 @@ public class Search {
         ResultSet rs = stmt
             .executeQuery(
                 "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\""
-                    + "WHERE \"Playlist\".\"playlistName\" LIKE '%" + term + "%' AND"
+                    + " WHERE \"Playlist\".\"playlistName\" LIKE '%" + term + "%' AND"
                     + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND"
-                    + "      \"Make\".email = '" + Application.getCurrentUser().getEmail() + "''");
+                    + "      \"Make\".email = '" + Application.getCurrentUser().getEmail() + "'");
 
         while (rs.next()) {
             playlists.add(new Playlist(
