@@ -98,7 +98,7 @@ public class Application {
             String[] fields = split(text);
             if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
-                    "list", "share", "limit")
+                    "list", "share")
                 .contains(fields[0].toLowerCase())) {
                 System.out.println("Must be logged in to perform this action.");
             } else {
