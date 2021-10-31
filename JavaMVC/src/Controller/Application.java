@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 public class Application {
 
     private static User currentUser;
+    private static int times = 1;
 
     Application() {
         currentUser = null;
@@ -41,7 +42,7 @@ public class Application {
             openConn();
 
             if (getConn() == null) {
-                System.out.println("Fatal: could not establish a connection.");
+                System.out.println("Trying again for the: " + times++ + " time");
                 main(new String[]{});
             } else {
                 Application application = new Application();
