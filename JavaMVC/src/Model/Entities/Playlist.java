@@ -60,4 +60,8 @@ public class Playlist {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    public String getPlaylistID() {
+        return this.playlistID;
+    }
 }
