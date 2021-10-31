@@ -59,7 +59,7 @@ public class Search {
                 + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
                 + (sort.equalsIgnoreCase("genre") ? ", \"Genre\", \"SongGNR\" " : "")
                 + "     WHERE"
-                + "     \"Song\".title LIKE '%" + term + "%'"
+                + "     \"Song\".title ILIKE '%" + term + "%'"
                 + (sort.equalsIgnoreCase("artist") ?
                 " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
                     + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
@@ -71,7 +71,7 @@ public class Search {
 
             case "artist" -> "SELECT \"Song\".* FROM \"Song\", \"Compose\", \"Artist\""
                 + (sort.equalsIgnoreCase("genre") ? ",  \"Genre\", \"SongGNR\" " : "")
-                + " WHERE \"Artist\".\"artistName\" like '%" + term + "%' "
+                + " WHERE \"Artist\".\"artistName\" ilike '%" + term + "%' "
                 + "   and \"Artist\".\"artistName\"= \"Compose\".\"artistName\""
                 + "   and \"Song\".\"songID\" = \"Compose\".\"songID\""
                 + (sort.equalsIgnoreCase("genre") ?
@@ -83,7 +83,7 @@ public class Search {
             case "album" -> "SELECT \"Song\".* FROM \"Song\", \"ComposedOf\", \"Album\""
                 + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
                 + (sort.equalsIgnoreCase("genre") ? ", \"Genre\", \"SongGNR\" " : "")
-                + " WHERE \"Album\".\"albumName\" like '%" + term + "%' "
+                + " WHERE \"Album\".\"albumName\" ilike '%" + term + "%' "
                 + "   and \"Album\".\"albumID\" = \"ComposedOf\".\"albumID\""
                 + "   and \"Song\".\"songID\" = \"ComposedOf\".\"songID\" "
                 + (sort.equalsIgnoreCase("artist") ?
@@ -122,7 +122,7 @@ public class Search {
         ResultSet rs = stmt
             .executeQuery(
                 "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\""
-                    + " WHERE \"Playlist\".\"playlistName\" LIKE '%" + term + "%' AND"
+                    + " WHERE \"Playlist\".\"playlistName\" ILIKE '%" + term + "%' AND"
                     + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND"
                     + "      \"Make\".email = '" + Application.getCurrentUser().getEmail() + "'");
 
@@ -167,7 +167,7 @@ public class Search {
         Statement stmt = Database.getConn().createStatement();
         ResultSet rs = stmt
             .executeQuery(
-                "SELECT \"Album\".* FROM \"Album\" WHERE \"albumName\" LIKE '%" + term + "%'");
+                "SELECT \"Album\".* FROM \"Album\" WHERE \"albumName\" ILIKE '%" + term + "%'");
 
         while (rs.next()) {
             albums.add(new Album(
@@ -187,7 +187,7 @@ public class Search {
         ArrayList<Song> songs = new ArrayList<>();
         Statement stmt = Database.getConn().createStatement();
         String query = "SELECT \"Song\".* FROM \"Song\", \"Make\", \"Contains\", \"User\""
-            + " WHERE \"playlistName\" LIKE '%" + playlist.getPlaylistID() + "%' AND"
+            + " WHERE \"playlistName\" ILIKE '%" + playlist.getPlaylistID() + "%' AND"
             + "      \"Make\".\"playlistID\" = \"Contains\".\"playlistID\" AND"
             + "      \"User\".email = \"Make\".email AND"
             + "      \"Contains\".\"songID\" = \"Song\".\"songID\" AND"
