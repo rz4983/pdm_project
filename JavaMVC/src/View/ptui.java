@@ -119,8 +119,11 @@ public class ptui {
                         Pattern.CASE_INSENSITIVE);
                 System.out.print("Enter email: ");
                 inputs[0] = in.nextLine(); // username
-                if (VALID_EMAIL_ADDRESS_REGEX.matcher(inputs[0]).find() && !Authentication
-                    .validUser(null, inputs[0])) {
+                if (!VALID_EMAIL_ADDRESS_REGEX.matcher(inputs[0]).find()) {
+                    System.out.println("Use an actual email.");
+                    continue;
+                }
+                if (!Authentication.validUser(null, inputs[0])) {
                     break;
                 }
                 System.out.println("Email is used with another account. Try another email.");
