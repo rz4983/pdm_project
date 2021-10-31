@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/JavaMVC/src/Model/Entities/Song.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/JavaMVC/src/Model/Entities/User.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/JavaMVC/src/Model/QueryDB/Search.java" dialect="PostgreSQL" />
   </component>
