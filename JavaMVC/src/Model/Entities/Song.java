@@ -58,21 +58,43 @@ public class Song {
     }
 
     public String queryArtist() throws SQLException {
-        String checkQ = "Select *" +
-                " FROM \"Compose\"" +
-                " WHERE \"songID\" = '" + this.songID + "';";
+        String checkQ = "Select get_song_artist('" + this.songID +"');";
 
         ResultSet rs = stmt.executeQuery(checkQ);
 
         String songArtist = "";
         while (rs.next()) {
-            songArtist = rs.getString("artistName");
+            songArtist = rs.getString("get_song_artist");
         }
         if (songArtist == null || songArtist.equals("")){
             songArtist = "N/A";
         }
 
         return songArtist;
+    }
+
+    public String getSongID() {
+        return songID;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSongReleaseDate() {
+        return songReleaseDate;
+    }
+
+    public static Statement getStmt() {
+        return stmt;
+    }
+
+    public static void setStmt(Statement stmt) {
+        Song.stmt = stmt;
     }
 
     /**
@@ -82,7 +104,8 @@ public class Song {
     public String toString() {
 
         try {
-            return String.format("Song: %s -- Artist: %s -- Length: %d -- Release Date: %s", title, queryArtist(), length, songReleaseDate);
+            return String.format("Song: %s -- Artist: %s -- Minutes: %.2f -- Release Date: %s", title, queryArtist(),
+                    length / 1000.0 / 60, songReleaseDate);
         } catch (SQLException e) {
             e.printStackTrace();
         }
