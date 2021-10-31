@@ -48,15 +48,6 @@ public class Song {
         this.songReleaseDate = songReleaseDate;
     }
 
-    //TODO helper methods
-
-    /**
-     * TODO
-     */
-    public void playSong() {
-        // mark song as played
-    }
-
     public String queryArtist() throws SQLException {
         String checkQ = "Select get_song_artist('" + this.songID +"');";
 
@@ -75,26 +66,6 @@ public class Song {
 
     public String getSongID() {
         return songID;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSongReleaseDate() {
-        return songReleaseDate;
-    }
-
-    public static Statement getStmt() {
-        return stmt;
-    }
-
-    public static void setStmt(Statement stmt) {
-        Song.stmt = stmt;
     }
 
     public int getNumPlayed() throws SQLException {

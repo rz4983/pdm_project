@@ -47,13 +47,6 @@ public class Playlist {
         this.runtime = runtime;
     }
 
-    //TODO helper methods
-
-    /**
-     * TODO
-     *
-     * @return
-     */
     public List<Song> getSongs(){
 
         List<Song> songs = new ArrayList<Song>();

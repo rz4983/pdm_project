@@ -17,6 +17,17 @@ import java.util.List;
  * @version 2021.10.24.1
  */
 public class User {
+
+    private static Statement stmt;
+
+    static {
+        try {
+            stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /** Unique email of the user. */
     private final String email;
     /** Unique username of the user. */
@@ -60,38 +71,18 @@ public class User {
         this.userNumFollowers = userNumFollowers;
     }
 
-    /**
-     * TODO
-     *
-     * @param lastAccessDate
-     */
-    public void setLastAccessDate(String lastAccessDate) {
-        this.lastAccessDate = lastAccessDate;
-    }
-
-    /**
-     * TODO
-     *
-     * @param user
-     */
-    public void addFriend(User user) {
+    public void addFriend(User user) throws SQLException {
+        String query = "CALL add_follower('" + this.email + "', '" + user.getEmail() + "');";
+        stmt.execute(query);
         this.userNumFollowers++;
     }
 
-    /**
-     * TODO
-     *
-     * @param user
-     */
-    public void removeFriend(User user) {
-        
+    public void removeFriend(User user) throws SQLException {
+        String query = "CALL remove_follower('" + this.email + "', '" + user.getEmail() + "');";
+        stmt.execute(query);
+        this.userNumFollowers++;
     }
 
-    /**
-     * TODO
-     *
-     * @return
-     */
     public List<Playlist> getPlaylists() throws SQLException {
         ArrayList<Playlist> playlists = new ArrayList<>();
         Statement stmt = Database.getConn().createStatement();
@@ -117,10 +108,7 @@ public class User {
         return email;
     }
 
-    /**
-     * @return TODO
-     */
-    @Override
+    // TODO
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
