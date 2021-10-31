@@ -459,7 +459,7 @@ public class Application {
                         }
 
                         for (User user : followers) {
-                            System.out.println(user);
+                            System.out.println("\t" + user);
                         }
                     }
 
