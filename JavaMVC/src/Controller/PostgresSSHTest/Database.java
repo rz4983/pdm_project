@@ -50,9 +50,7 @@ public class Database {
             conn = DriverManager.getConnection(url, props);
             System.out.println("Database connection established");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 
     public static void closeConn() throws SQLException {

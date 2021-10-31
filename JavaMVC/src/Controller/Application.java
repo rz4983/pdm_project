@@ -39,11 +39,13 @@ public class Application {
         }));
         try {
             openConn();
+
             if (getConn() == null) {
                 System.out.println("Fatal: could not establish a connection.");
             } else {
                 Application application = new Application();
                 application.mainLoop();
+
             }
             closeConn();
         } catch (SQLException ignored) {
@@ -116,9 +118,9 @@ public class Application {
                     case "logout" -> {
                         currentUser = null;
                         System.out.println("Logout successful.");
-                        System.out.println("\nClose session? y/[n]");
+                        System.out.print("\nClose session? y/[n]: ");
                         String response = scanner.nextLine();
-                        if (response.startsWith("y")) {
+                        if (response != null && response.toLowerCase().startsWith("y")) {
                             System.out.println("Exiting Program");
                             return;
                         }
@@ -228,8 +230,8 @@ public class Application {
                                     System.out.println("Usage: play playlist playlist-name");
                                     break;
                                 }
-                                    List<Playlist> searchResultPlaylist = Search
-                                        .searchPlaylist(fields[2]);
+                                List<Playlist> searchResultPlaylist = Search
+                                    .searchPlaylist(fields[2]);
                                 if (searchResultPlaylist.size() == 0) {
                                     System.out.println("No playlist " + fields[2]);
                                     break;
