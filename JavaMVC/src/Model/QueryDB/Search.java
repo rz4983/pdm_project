@@ -71,9 +71,9 @@ public class Search {
             case "album" -> "SELECT \"Song\".* FROM \"Song\", \"ComposedOf\", \"Album\""
                 + (sort.equalsIgnoreCase("artist") ? " \"Artist\"" : "")
                 + (sort.equalsIgnoreCase("genre") ? " \"Genre\"" : "")
-                + " WHERE \"Album\".\"albumName\" like '%" + term + "%' and"
+                + " WHERE \"Album\".\"albumName\" like '%" + term + "%' "
                 + "   and \"Album\".\"albumID\" = \"ComposedOf\".\"albumID\""
-                + "   and \"Song\".\"songID\" = \"ComposedOf\".\"songID\""
+                + "   and \"Song\".\"songID\" = \"ComposedOf\".\"songID\" "
                 + orderBy
                 + " LIMIT 100";
             default -> throw new IllegalStateException(
@@ -164,4 +164,28 @@ public class Search {
     }
 
 
+    public static List<Song> searchSongFromPlaylist(Playlist playlist, String term)
+        throws SQLException {
+        ArrayList<Song> songs = new ArrayList<>();
+        Statement stmt = Database.getConn().createStatement();
+        String query = "SELECT \"Song\".* FROM \"Song\", \"Make\", \"Contains\", \"User\""
+            + " WHERE \"playlistName\" LIKE '%" + playlist.getPlaylistID() + "%' AND"
+            + "      \"Make\".\"playlistID\" = \"Contains\".\"playlistID\" AND"
+            + "      \"User\".email = \"Make\".email AND"
+            + "      \"Contains\".\"songID\" = \"Song\".\"songID\" AND"
+            + "      \"User\".email = '" + Application.getCurrentUser().getEmail() + "'";
+
+        ResultSet rs = stmt
+            .executeQuery(query);
+
+        while (rs.next()) {
+            songs.add(new Song(
+                rs.getString("songID"),
+                rs.getInt("length"),
+                rs.getString("title"),
+                rs.getString("songReleaseDate")
+            ));
+        }
+        return songs;
+    }
 }
