@@ -48,7 +48,11 @@ public class RelationsManager {
     public static void removeAlbum(Album album, Playlist playlist) {
     }
 
-    public static void sharePlaylist(Playlist searchPlaylist, User searchUser) {
+    public static void sharePlaylist(Playlist searchPlaylist, User searchUser) throws SQLException {
+        String sharePlaylist = "INSERT INTO \"Make\" " +
+                "VALUES ('" + searchUser.getEmail() + "', '" + searchPlaylist.getPlaylistID() + "');";
+
+        stmt.execute(sharePlaylist);
     }
 
     public static void rename(Playlist searchPlaylist, String field) {
@@ -57,6 +61,14 @@ public class RelationsManager {
 
     public static void play(Song song){
 
+        String playSong = "INSERT INTO \"Plays\" \n" +
+                "VALUES ('" + Controller.Application.getCurrentUser().getEmail() + "', '" + song.getSongID() + "');";
+
+        try {
+            stmt.execute(playSong);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void createPlaylist(String playlistName) throws SQLException {
@@ -71,7 +83,19 @@ public class RelationsManager {
         System.out.printf("Playlist '%s' has been created%n", playlistName);
     }
 
-    public static void deletePlaylist(Playlist playlist) {
+    public static void deletePlaylist(Playlist playlist) throws SQLException {
+        String playlistId = playlist.getPlaylistID();
+
+        String deletePlaylist = "DELETE FROM \"Contains\" " +
+                "WHERE \"playlistID\" = '" + playlistId + "'; " +
+                " " +
+                "DELETE FROM \"Playlist\" WHERE " +
+                "\"playlistID\" = '" + playlistId + "'; " +
+                " " +
+                "DELETE FROM \"Make\" " +
+                "WHERE \"playlistID\" = '" + playlistId + "';";
+
+        stmt.execute(deletePlaylist);
     }
 }
 
