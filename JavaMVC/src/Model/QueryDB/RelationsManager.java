@@ -36,27 +36,39 @@ public class RelationsManager {
         stmt.execute(query);
     }
 
-    public static void removeSong(Song songID, Playlist playlist) {
-        // check if in
-        // if in -> remove from playlist
+    public static void removeSong(Song song, Playlist playlist) throws SQLException {
+        String songID = song.getSongID();
+        String playlistID = playlist.getPlaylistID();
+        String query = "CALL remove_song('" + songID + "', '" + playlistID + "');";
+        stmt.execute(query);
     }
 
-    public static void addAlbum(Album album, Playlist playlist) {
-
+    public static void addAlbum(Album album, Playlist playlist) throws SQLException {
+        String albumID = album.getAlbumID();
+        String playlistID = playlist.getPlaylistID();
+        String query = "CALL add_album('" + albumID + "', '" + playlistID + "');";
+        stmt.execute(query);
     }
 
-    public static void removeAlbum(Album album, Playlist playlist) {
+    public static void removeAlbum(Album album, Playlist playlist) throws SQLException {
+        String albumID = album.getAlbumID();
+        String playlistID = playlist.getPlaylistID();
+        String query = "CALL remove_album('" + albumID + "', '" + playlistID + "');";
+        stmt.execute(query);
     }
 
     public static void sharePlaylist(Playlist searchPlaylist, User searchUser) throws SQLException {
         String sharePlaylist = "INSERT INTO \"Make\" " +
-                "VALUES ('" + searchUser.getEmail() + "', '" + searchPlaylist.getPlaylistID() + "');";
+                "VALUES ('" + searchUser.getEmail() + "', '" + searchPlaylist.getPlaylistID() + "') " +
+                "ON CONFLICT DO NOTHING;";
 
         stmt.execute(sharePlaylist);
     }
 
-    public static void rename(Playlist searchPlaylist, String field) {
-
+    public static void rename(Playlist searchPlaylist, String field) throws SQLException {
+        String playlistID = searchPlaylist.getPlaylistID();
+        String query = "CALL rename_playlist('" + playlistID + "', '" + field + "');";
+        stmt.execute(query);
     }
 
     public static void play(Song song) {
