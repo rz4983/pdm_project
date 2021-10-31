@@ -30,9 +30,6 @@ public class Artist {
      */
     @Override
     public String toString() {
-        //TODO reformat toString()
-        return "Artist{" +
-                "name='" + name + '\'' +
-                '}';
+        return String.format("Artist: %s", this.name);
     }
 }
