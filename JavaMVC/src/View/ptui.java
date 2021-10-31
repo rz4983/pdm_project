@@ -182,7 +182,6 @@ public class ptui {
         String[] inputs = new String[2];
 
         System.out.print("Enter email: ");
-        System.out.println(in.hasNextLine());
         inputs[0] = in.nextLine();
 
         System.out.print("Enter password: ");
