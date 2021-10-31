@@ -111,14 +111,26 @@ public class Application {
                         System.out.println("Currently logged in as " + info[1]);
                     }
                     case "search" -> {
+                        if (fields.length == 2 || (fields.length == 3 && fields[2]
+                            .matches("\\-\\-sort=\\-?\\w+$"))) {
+                            // search term [--sort]
+                            String category = "song";
+                            String term = fields[1];
+                            String sort = fields.length == 3 ? fields[2] : "--sort=song";
+                            boolean ascending = !Character.toString(sort.charAt(7)).equals("-");
+
+                            sort = sort.substring(7 + (ascending ? 0 : 1));
+                            ptui.searchSongs(Search.searchSongs(category, term, sort, ascending));
+                            break;
+                        }
                         if (fields.length < 3 || fields.length > 4) {
                             System.out.println("Invalid usage.");
                             break;
                         }
                         // search Song  <term> [--sort=name]
-                        String category = fields.length == 3 ? fields[1] : "song";
-                        String term =  fields.length == 3 ? fields[1] : fields[2];
-                        String sort = fields.length == 4 ? fields[3] : "--sort=song";
+                        String category = fields[1];
+                        String term = fields[2];
+                        String sort = fields.length >= 4 ? fields[3] : "--sort=song";
                         boolean ascending = !Character.toString(sort.charAt(7)).equals("-");
 
                         if (!Arrays.asList("genre", "song", "artist", "album")
