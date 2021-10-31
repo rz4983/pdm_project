@@ -71,7 +71,7 @@ public class Album {
     public String toString() {
         try {
             return String.format("Album: %s -- Author: %s -- Release Date: %s", this.title,
-                    queryArtist(), AlbumReleaseDate);
+                    queryArtist(), this.AlbumReleaseDate);
         } catch (SQLException e) {
             e.printStackTrace();
         }

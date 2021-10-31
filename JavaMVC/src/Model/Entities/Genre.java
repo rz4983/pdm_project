@@ -14,7 +14,7 @@ package Model.Entities;
 public class Genre {
 
     /** Unique alphanumeric String identifying this genre entity. */
-    private final String GenreID;
+    private final String genreID;
     /** Non-unique String for the name of this genre entity. */
     private final String genreName;
 
@@ -25,7 +25,7 @@ public class Genre {
      * @param genreName non-unique String name
      */
     public Genre(String genreID, String genreName) {
-        GenreID = genreID;
+        this.genreID = genreID;
         this.genreName = genreName;
     }
 
@@ -34,10 +34,6 @@ public class Genre {
      */
     @Override
     public String toString() {
-        //TODO reformat toString()
-        return "Genre{" +
-                "GenreID='" + GenreID + '\'' +
-                ", genreName='" + genreName + '\'' +
-                '}';
+        return String.format("Genre: %s", this.genreName);
     }
 }
