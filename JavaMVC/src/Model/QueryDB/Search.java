@@ -45,35 +45,53 @@ public class Search {
 
         String query = switch (category.toLowerCase()) {
             case "genre" -> "SELECT \"Song\".* FROM \"Song\", \"SongGNR\", \"Genre\""
-                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\"" : "")
+                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
                 + " WHERE \"Genre\".\"genreName\" = '" + term + "' "
                 + "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
                 + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\""
+                + (sort.equalsIgnoreCase("artist") ?
+                " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
+                    + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
                 + orderBy
                 + " LIMIT 100";
 
             case "song" -> "SELECT \"Song\".* FROM \"Song\""
-                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\"" : "")
-                + (sort.equalsIgnoreCase("genre") ? ", \"Genre\"" : "")
+                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
+                + (sort.equalsIgnoreCase("genre") ? ", \"Genre\", \"SongGNR\" " : "")
                 + "     WHERE"
                 + "     \"Song\".title LIKE '%" + term + "%'"
+                + (sort.equalsIgnoreCase("artist") ?
+                " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
+                    + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
+                + (sort.equalsIgnoreCase("genre") ?
+                "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
+                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ")
                 + orderBy
-                + " LIMIT 100";
+                + " LIMIT 100 ";
 
             case "artist" -> "SELECT \"Song\".* FROM \"Song\", \"Compose\", \"Artist\""
-                + (sort.equalsIgnoreCase("genre") ? ", \"Genre\"" : "")
+                + (sort.equalsIgnoreCase("genre") ? ",  \"Genre\", \"SongGNR\" " : "")
                 + " WHERE \"Artist\".\"artistName\" like '%" + term + "%' "
                 + "   and \"Artist\".\"artistName\"= \"Compose\".\"artistName\""
                 + "   and \"Song\".\"songID\" = \"Compose\".\"songID\""
+                + (sort.equalsIgnoreCase("genre") ?
+                "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
+                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ")
                 + orderBy
                 + " LIMIT 100";
 
             case "album" -> "SELECT \"Song\".* FROM \"Song\", \"ComposedOf\", \"Album\""
-                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\"" : "")
-                + (sort.equalsIgnoreCase("genre") ? ", \"Genre\"" : "")
+                + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
+                + (sort.equalsIgnoreCase("genre") ? ", \"Genre\", \"SongGNR\" " : "")
                 + " WHERE \"Album\".\"albumName\" like '%" + term + "%' "
                 + "   and \"Album\".\"albumID\" = \"ComposedOf\".\"albumID\""
                 + "   and \"Song\".\"songID\" = \"ComposedOf\".\"songID\" "
+                + (sort.equalsIgnoreCase("artist") ?
+                " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
+                    + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
+                + (sort.equalsIgnoreCase("genre") ?
+                "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
+                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ")
                 + orderBy
                 + " LIMIT 100";
             default -> throw new IllegalStateException(
