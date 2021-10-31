@@ -119,10 +119,10 @@ public class Authentication {
         User user = new User(
             rs.getString("email"),
             rs.getString("username"),
-            password,
             rs.getString("creationDate"),
             rs.getString("lastAccessDate"),
             rs.getString("firstName"),
+            rs.getString("lastName"),
             rs.getInt("userNumFollowers")
         );
         rs.close();

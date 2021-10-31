@@ -28,40 +28,54 @@ public class User {
         }
     }
 
-    /** Unique email of the user. */
+    /**
+     * Unique email of the user.
+     */
     private final String email;
-    /** Unique username of the user. */
+    /**
+     * Unique username of the user.
+     */
     private final String username;
-    /** Unix time stamp of when the account was created. */
+    /**
+     * Unix time stamp of when the account was created.
+     */
     private final String creationDate;
-    /** Unix time stamp of when the most recent access time was. */
-    private String lastAccessDate;
-    /** The first name of the user. */
+    /**
+     * The first name of the user.
+     */
     private final String firstName;
-    /** The last name of the user. */
+    /**
+     * The last name of the user.
+     */
     private final String lastName;
-    /** The number of users that follows this user. */
+    /**
+     * Unix time stamp of when the most recent access time was.
+     */
+    private String lastAccessDate;
+    /**
+     * The number of users that follows this user.
+     */
     private long userNumFollowers;
 
     /**
      * Constructor is called after needed data from DB is queried.
      *
-     * @param email email address of the user
-     * @param username username of the user
-     * @param creationDate the unix time stamp this user was created
-     * @param lastAccessDate the unix time stamp this user account was last accessed
-     * @param firstName first name of the user
-     * @param lastName last name of the user
+     * @param email            email address of the user
+     * @param username         username of the user
+     * @param creationDate     the unix time stamp this user was created
+     * @param lastAccessDate   the unix time stamp this user account was last accessed
+     * @param firstName        first name of the user
+     * @param lastName         last name of the user
      * @param userNumFollowers number of followers this user has
      */
     public User(
-            String email,
-            String username,
-            String creationDate,
-            String lastAccessDate,
-            String firstName,
-            String lastName,
-            long userNumFollowers) {
+        String email,
+        String username,
+        String creationDate,
+        String lastAccessDate,
+        String firstName,
+        String lastName,
+        long userNumFollowers) {
         this.email = email;
         this.username = username;
         this.creationDate = creationDate;
@@ -80,7 +94,7 @@ public class User {
     public void removeFriend(User user) throws SQLException {
         String query = "CALL remove_follower('" + this.email + "', '" + user.getEmail() + "');";
         stmt.execute(query);
-        this.userNumFollowers++;
+        this.userNumFollowers--;
     }
 
     public List<Playlist> getPlaylists() throws SQLException {
@@ -110,18 +124,57 @@ public class User {
 
     // TODO
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", creationDate=" + creationDate +
-                ", lastAccessDate=" + lastAccessDate +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userNumFollowers=" + userNumFollowers +
-                '}';
+        return "User: " +
+            "email: " + email + ' ' +
+            "-- username: " + username + ' ' +
+            "-- name: " + firstName + ' '
+             + lastName + ' ' +
+            "-- followers: " + userNumFollowers;
     }
 
     public String getName() {
         return this.firstName + " " + this.lastName;
+    }
+
+    public List<User> getFollowers() throws SQLException {
+        List<User> users = new ArrayList<>();
+        ResultSet rs = stmt
+            .executeQuery("SELECT \"User\".* FROM \"User\", \"FollowsUser\" "
+                + "WHERE \"followeeEmail\" = '" + email + "' "
+                + "AND \"User\".email = \"followerEmail\"");
+
+        while (rs.next()) {
+            users.add(new User(
+                rs.getString("email"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getString("creationDate"),
+                rs.getString("lastAccessDate"),
+                rs.getString("firstName" ) + rs.getString("firstName" ),
+                rs.getInt("userNumFollowers")
+            ));
+        }
+        return users;
+    }
+
+    public List<User> getFollowees() throws SQLException {
+        List<User> users = new ArrayList<>();
+        ResultSet rs = stmt
+            .executeQuery("SELECT \"User\".* FROM \"User\", \"FollowsUser\" "
+                + "WHERE \"followerEmail\" = '" + email + "' "
+                + "AND \"User\".email = \"followeeEmail\"");
+
+        while (rs.next()) {
+            users.add(new User(
+                rs.getString("email"),
+                rs.getString("username"),
+                rs.getString("creationDate"),
+                rs.getString("lastAccessDate"),
+                rs.getString("firstName"),
+                rs.getString("lastName"),
+                rs.getInt("userNumFollowers")
+            ));
+        }
+        return users;
     }
 }

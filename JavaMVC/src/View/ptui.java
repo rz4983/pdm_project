@@ -45,15 +45,15 @@ public class ptui {
         System.out.println("share    -- share playlist-name another-email");
         System.out.println("play     -- " +
             "\n\t\tplay song song-name\n\t\tplay song song-name playlist-name\n\t\tplay playlist playlist-name\n\t\tplay album album-name");
-        System.out.println("follow   -- follow another-email");
-        System.out.println("unfollow -- unfollow another-email");
-        System.out.println("rename   -- rename <playlist ID> <new name>");
+        System.out.println("follow      -- follow another-email");
+        System.out.println("unfollow    -- unfollow another-email");
+        System.out.println("rename      -- rename <playlist ID> <new name>");
         System.out.println(
-            "add      -- \n\t\tadd song playlist-name song-name\n\t\tadd album playlist-name album-name");
+            "add         -- \n\t\tadd song playlist-name song-name\n\t\tadd album playlist-name album-name");
         System.out.println(
-            "remove   -- \n\t\tremove song playlist-name song-name\n\t\tremove album playlist-name album-name");
-        System.out.println("list     -- \n\t\tlist\n\t\tlist playlist-name");
-        System.out.println("search   -- "
+            "remove      -- \n\t\tremove song playlist-name song-name\n\t\tremove album playlist-name album-name");
+        System.out.println("list        -- \n\t\tlist\n\t\tlist playlist-name");
+        System.out.println("search      -- "
             + "\n\t\tsearch term"
             + "\n\t\tsearch term --sort=sortCategory"
             + "\n\t\tsearch term --sort=-sortCategory"
@@ -65,9 +65,11 @@ public class ptui {
             + "\n\t\tsort category may have a minus (-) in front"
             + "\n\t\tto indicate descending order."
         );
-        System.out.println("help     -- Print this message.");
-        System.out.println("quit     -- Exit the application.");
-        System.out.println("limit    -- limit number.");
+        System.out.println("whoifollow  -- Displays your followers");
+        System.out.println("myfollowers -- Displays your followers");
+        System.out.println("limit       -- limit number.");
+        System.out.println("help        -- Print this message.");
+        System.out.println("quit        -- Exit the application.");
     }
 
     public static Playlist pickPlaylist(List<Playlist> playlists) {

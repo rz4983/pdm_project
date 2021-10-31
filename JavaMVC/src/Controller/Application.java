@@ -1,5 +1,9 @@
 package Controller;
 
+import static Controller.PostgresSSHTest.Database.closeConn;
+import static Controller.PostgresSSHTest.Database.getConn;
+import static Controller.PostgresSSHTest.Database.openConn;
+
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
@@ -8,7 +12,6 @@ import Model.QueryDB.Authentication;
 import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
 import View.ptui;
-
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,8 +20,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static Controller.PostgresSSHTest.Database.*;
 
 public class Application {
 
@@ -94,7 +95,7 @@ public class Application {
             String[] fields = split(text);
             if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
-                    "list", "share")
+                    "list", "share", "myfollowers", "whoifollow")
                 .contains(fields[0].toLowerCase())) {
                 System.out.println("Must be logged in to perform this action.");
             } else {
@@ -308,7 +309,7 @@ public class Application {
                             break;
                         }
                         currentUser.removeFriend(following);
-                        System.out.println("You are now following " + following.getName());
+                        System.out.println("You are no longer following " + following.getName());
                     }
                     case "rename" -> {
                         if (fields.length != 3) {
@@ -435,6 +436,31 @@ public class Application {
                         }
                         RelationsManager.sharePlaylist(playlist, friend);
                         System.out.println("The playlist has been shared with " + fields[2]);
+                    }
+
+                    case "whoifollow" -> {
+                        List<User> followees = currentUser.getFollowees();
+                        if (followees.size() == 0) {
+                            System.out.println("You do not follow anyone.");
+                        } else {
+                            System.out.println("\tYou follow " + followees.size() + " people");
+                        }
+                        for (User user : followees) {
+                            System.out.println("\t" + user);
+                        }
+                    }
+
+                    case "myfollowers" -> {
+                        List<User> followers = currentUser.getFollowers();
+                        if (followers.size() == 0) {
+                            System.out.println("You have no followers");
+                        } else {
+                            System.out.println("\tYou have " + followers.size() + " followers");
+                        }
+
+                        for (User user : followers) {
+                            System.out.println(user);
+                        }
                     }
 
                     case "limit" -> {
