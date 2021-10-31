@@ -44,12 +44,14 @@ public class ptui {
         System.out.println("delete   -- delete playlist-name");
         System.out.println("share    -- share playlist-name another-email");
         System.out.println("play     -- " +
-            "\n\t\tplay song song-name\n\t\tplay song song-name playlist-name\n\t\tplay playlist playlist-name");
+            "\n\t\tplay song song-name\n\t\tplay song song-name playlist-name\n\t\tplay playlist playlist-name\n\t\tplay album album-name");
         System.out.println("follow   -- follow another-email");
         System.out.println("unfollow -- unfollow another-email");
         System.out.println("rename   -- rename <playlist ID> <new name>");
-        System.out.println("add      -- \n\t\tadd song playlist-name song-name\n\t\tadd album playlist-name album-name");
-        System.out.println("remove   -- \n\t\tremove song playlist-name song-name\n\t\tremove album playlist-name album-name");
+        System.out.println(
+            "add      -- \n\t\tadd song playlist-name song-name\n\t\tadd album playlist-name album-name");
+        System.out.println(
+            "remove   -- \n\t\tremove song playlist-name song-name\n\t\tremove album playlist-name album-name");
         System.out.println("list     -- \n\t\tlist\n\t\tlist playlist-name");
         System.out.println("search   -- "
             + "\n\t\tsearch term"
@@ -65,6 +67,7 @@ public class ptui {
         );
         System.out.println("help     -- Print this message.");
         System.out.println("quit     -- Exit the application.");
+        System.out.println("limit    -- limit number.");
     }
 
     public static Playlist pickPlaylist(List<Playlist> playlists) {
@@ -235,12 +238,17 @@ public class ptui {
         List<Song> songs = playlist.getSongs();
         for (int i = 0; i < songs.size(); i++) {
             System.out.println("Now playing: " + " -- " + (i + 1) + " -- " + songs.get(i));
-            RelationsManager.play(songs.get(i));
         }
     }
 
     public static void play(Song song) {
         System.out.println("Now playing: " + " -- " + song);
-        RelationsManager.play(song);
+    }
+
+    public static void play(Album album) {
+        List<Song> songs = album.getSongs();
+        for (int i = 0; i < songs.size(); i++) {
+            System.out.println("Now playing: " + " -- " + (i + 1) + " -- " + songs.get(i));
+        }
     }
 }

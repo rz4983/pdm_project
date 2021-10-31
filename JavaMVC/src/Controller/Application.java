@@ -210,7 +210,7 @@ public class Application {
                     case "play" -> {
                         if (fields.length != 3 && fields.length != 4) {
                             System.out.println(
-                                "Usage:\n\tplay song song-name\n\tplay song song-name playlist-name\n\tplay playlist playlist-name"
+                                "Usage:\n\tplay song song-name\n\tplay song song-name playlist-name\n\tplay playlist playlist-name\n\tplay album album-name"
                             );
                             break;
                         }
@@ -245,6 +245,7 @@ public class Application {
                                     : ptui.pickSong(searchResultSong);
 
                                 ptui.play(song);
+                                RelationsManager.playSong(song);
                             }
 
                             case "playlist" -> {
@@ -262,6 +263,25 @@ public class Application {
                                     searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
                                         : ptui.pickPlaylist(searchResultPlaylist);
                                 ptui.play(playlist);
+                                RelationsManager.playPlaylist(playlist);
+                            }
+
+                            case "album" -> {
+                                if (fields.length != 3) {
+                                    System.out.println("Usage: play album album-name");
+                                    break;
+                                }
+                                List<Album> searchResultAlbum = Search
+                                    .searchAlbum(fields[2]);
+                                if (searchResultAlbum.size() == 0) {
+                                    System.out.println("No album " + fields[2]);
+                                    break;
+                                }
+                                Album album =
+                                    searchResultAlbum.size() == 1 ? searchResultAlbum.get(0)
+                                        : ptui.pickAlbum(searchResultAlbum);
+                                ptui.play(album);
+                                RelationsManager.playAlbum(album);
                             }
                         }
                     }
