@@ -33,7 +33,7 @@ public class RelationsManager {
         String songID = song.getSongID();
         String playlistID = playlist.getPlaylistID();
         String query = "CALL add_song('" + songID + "', '" + playlistID + "');";
-        stmt.executeQuery(query);
+        stmt.execute(query);
     }
 
     public static void removeSong(Song songID, Playlist playlist) {

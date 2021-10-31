@@ -132,4 +132,8 @@ public class User {
                 ", userNumFollowers=" + userNumFollowers +
                 '}';
     }
+
+    public String getName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

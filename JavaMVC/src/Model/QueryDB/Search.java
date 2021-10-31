@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class Search {
 
+    private static int limit = 100;
+
     /**
      * Search songs if they appear in the title. Case-insensitive.
      *
@@ -25,6 +27,10 @@ public class Search {
      */
     public static List<Song> searchSongs(String term) throws SQLException {
         return searchSongs("song", term, "song", true);
+    }
+
+    public static void setLimit(int limit) {
+        Search.limit = limit;
     }
 
     /**
@@ -46,14 +52,12 @@ public class Search {
         String query = switch (category.toLowerCase()) {
             case "genre" -> "SELECT \"Song\".* FROM \"Song\", \"SongGNR\", \"Genre\""
                 + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
-                + " WHERE \"Genre\".\"genreName\" = '" + term + "' "
+                + " WHERE LOWER(\"Genre\".\"genreName\") = LOWER('" + term + "') "
                 + "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
                 + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\""
                 + (sort.equalsIgnoreCase("artist") ?
                 " and  \"Artist\".\"artistName\"= \"Compose\".\"artistName\" "
-                    + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
-                + orderBy
-                + " LIMIT 100";
+                    + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "");
 
             case "song" -> "SELECT \"Song\".* FROM \"Song\""
                 + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
@@ -65,9 +69,7 @@ public class Search {
                     + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
                 + (sort.equalsIgnoreCase("genre") ?
                 "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
-                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ")
-                + orderBy
-                + " LIMIT 100 ";
+                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ");
 
             case "artist" -> "SELECT \"Song\".* FROM \"Song\", \"Compose\", \"Artist\""
                 + (sort.equalsIgnoreCase("genre") ? ",  \"Genre\", \"SongGNR\" " : "")
@@ -76,9 +78,7 @@ public class Search {
                 + "   and \"Song\".\"songID\" = \"Compose\".\"songID\""
                 + (sort.equalsIgnoreCase("genre") ?
                 "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
-                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ")
-                + orderBy
-                + " LIMIT 100";
+                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ");
 
             case "album" -> "SELECT \"Song\".* FROM \"Song\", \"ComposedOf\", \"Album\""
                 + (sort.equalsIgnoreCase("artist") ? ", \"Artist\", \"Compose\" " : "")
@@ -91,12 +91,12 @@ public class Search {
                     + "  and \"Song\".\"songID\" = \"Compose\".\"songID\" " : "")
                 + (sort.equalsIgnoreCase("genre") ?
                 "   and \"Genre\".\"genreID\" = \"SongGNR\".\"genreID\""
-                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ")
-                + orderBy
-                + " LIMIT 100";
+                    + "   and \"Song\".\"songID\" = \"SongGNR\".\"songID\"" : " ");
             default -> throw new IllegalStateException(
                 "Unexpected value: " + category.toLowerCase());
-        };
+        }
+            + orderBy
+            + " LIMIT " + limit;
 
         ArrayList<Song> songs = new ArrayList<>();
         Statement stmt = Database.getConn().createStatement();

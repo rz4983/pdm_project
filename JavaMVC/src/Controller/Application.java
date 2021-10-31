@@ -1,5 +1,9 @@
 package Controller;
 
+import static Controller.PostgresSSHTest.Database.closeConn;
+import static Controller.PostgresSSHTest.Database.getConn;
+import static Controller.PostgresSSHTest.Database.openConn;
+
 import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
@@ -8,7 +12,6 @@ import Model.QueryDB.Authentication;
 import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
 import View.ptui;
-
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,9 +20,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static Controller.PostgresSSHTest.Database.closeConn;
-import static Controller.PostgresSSHTest.Database.openConn;
 
 public class Application {
 
@@ -39,8 +39,12 @@ public class Application {
         }));
         try {
             openConn();
-            Application application = new Application();
-            application.mainLoop();
+            if (getConn() == null) {
+                System.out.println("Fatal: could not establish a connection.");
+            } else {
+                Application application = new Application();
+                application.mainLoop();
+            }
             closeConn();
         } catch (SQLException ignored) {
             System.out.println(ignored);
@@ -90,7 +94,7 @@ public class Application {
             String[] fields = split(text);
             if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
-                    "list", "share")
+                    "list", "share", "limit")
                 .contains(fields[0].toLowerCase())) {
                 System.out.println("Must be logged in to perform this action.");
             } else {
@@ -157,10 +161,11 @@ public class Application {
 
                     case "create" -> {
                         if (fields.length != 2) {
-                            System.out.println("Invalid usage.");
+                            System.out.println("Usage: create playlist-name");
                             break;
                         }
                         RelationsManager.createPlaylist(fields[1]);
+                        System.out.println("Create playlist " + fields[1]);
                     }
                     case "play" -> {
                         if (fields.length != 3 && fields.length != 4) {
@@ -230,11 +235,13 @@ public class Application {
                             System.out.println("Invalid usage.");
                             break;
                         }
-                        User friend = Search.searchUser(fields[1]);
-                        if (friend == null) {
+                        User following = Search.searchUser(fields[1]);
+                        if (following == null) {
                             System.out.println("No user with the email " + fields[1]);
+                            break;
                         }
-                        currentUser.removeFriend(friend);
+                        currentUser.removeFriend(following);
+                        System.out.println("You are now following " + following.getName());
                     }
                     case "rename" -> {
                         if (fields.length != 3) {
@@ -251,10 +258,13 @@ public class Application {
                                 : ptui.pickPlaylist(searchResultPlaylist);
 
                         RelationsManager.rename(playlist, fields[2]);
+                        System.out.println("Renamed the playlist to " + fields[2]);
                     }
                     case "add", "remove" -> {
                         if (fields.length != 4) {
-                            System.out.println("Invalid usage.");
+                            System.out.println(
+                                "Usage: \n\t" + fields[0] + " song playlist-name song-name\n\t"
+                                    + fields[0] + " album playlist-name album-name");
                             break;
                         }
                         switch (fields[1].toLowerCase()) {
@@ -279,8 +289,10 @@ public class Application {
 
                                 if (fields[0].equalsIgnoreCase("add")) {
                                     RelationsManager.addSong(song, playlist);
+                                    System.out.println("added the song to the playlist.");
                                 } else {
                                     RelationsManager.removeSong(song, playlist);
+                                    System.out.println("removed the song to the playlist.");
                                 }
                             }
                             case "album" -> {
@@ -305,14 +317,19 @@ public class Application {
 
                                 if (fields[0].equalsIgnoreCase("add")) {
                                     RelationsManager.addAlbum(album, playlist);
+                                    System.out.println("added the album to the playlist.");
                                 } else {
                                     RelationsManager.removeAlbum(album, playlist);
+                                    System.out.println("removed the album to the playlist.");
                                 }
                             }
                         }
-                        ;
                     }
                     case "list" -> {
+                        if (fields.length > 2) {
+                            System.out.println("Usage: \n\tlist\n\tlist playlist-name");
+                            break;
+                        }
                         if (fields.length == 2) {
                             List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[1]);
                             if (searchResultPlaylist.size() == 0) {
@@ -323,12 +340,13 @@ public class Application {
                                 searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
                                     : ptui.pickPlaylist(searchResultPlaylist);
                             ptui.searchSongs(playlist.getSongs());
+                        } else {
+                            ptui.list(currentUser.getPlaylists());
                         }
-                        else ptui.list(currentUser.getPlaylists());
                     }
                     case "share" -> {
                         if (fields.length != 3) {
-                            System.out.println("Invalid usage.");
+                            System.out.println("Usage: share playlist-name email");
                             break;
                         }
                         List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[2]);
@@ -346,6 +364,17 @@ public class Application {
                             break;
                         }
                         RelationsManager.sharePlaylist(playlist, friend);
+                        System.out.println("The playlist has been shared with " + fields[2]);
+                    }
+
+                    case "limit" -> {
+                        if (fields.length != 2 || !fields[1].matches("//d+")) {
+                            System.out.println("Usage: limit number");
+                            break;
+                        }
+                        Search.setLimit(Integer.parseInt(fields[1]));
+                        System.out.println(
+                            "Each search will now display a maximum of " + fields[1] + "results");
                     }
                     case "help" -> {
                         ptui.help();
