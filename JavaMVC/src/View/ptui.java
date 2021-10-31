@@ -4,7 +4,7 @@ import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.QueryDB.Authentication;
-
+import Model.QueryDB.RelationsManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -15,7 +15,7 @@ public class ptui {
 
     public static void help() {
         System.out.println(
-                """
+            """
                         _                                                \s
                       ,´ `.                                              \s
                 ______|___|______________________________________________
@@ -45,9 +45,9 @@ public class ptui {
         System.out.println("follow -- follow <user email>");
         System.out.println("rename -- rename <playlist ID> <new name>");
         System.out.println(
-                "add -- add Album|Song <playlist name> <Album | Song>");
+            "add -- add Album|Song <playlist name> <Album | Song>");
         System.out.println(
-                "remove -- remove Album|Song <playlist name> <Album | Song>");
+            "remove -- remove Album|Song <playlist name> <Album | Song>");
         System.out.println("list   -- list all playlist");
         System.out.println("share  -- share <playlist Name | ID> email");
         System.out.println("help   -- Print this message.");
@@ -100,7 +100,6 @@ public class ptui {
         }
     }
 
-    public static void play(Song song) {}
 
     /**
      * Get user input for all required fields for creating a user. Asks user for, in this order: 1.
@@ -113,27 +112,17 @@ public class ptui {
         String[] inputs = new String[5];
 
         while (true) {
-            System.out.print("Enter username: ");
-            inputs[0] = in.nextLine(); // username
-            if (!Authentication.validUser(inputs[0], null)) {
-                break;
+            while (true) {
+                System.out.print("Enter email: ");
+                inputs[0] = in.nextLine(); // username
+                if (!Authentication.validUser(null, inputs[0])) {
+                    break;
+                }
+                System.out.println("Email is used with another account. Try another email.");
             }
-            System.out.println("Username is taken. Try another username.");
-        }
-
-        while (true) {
-            System.out.print("Enter email: ");
-            inputs[0] = in.nextLine(); // username
-            if (!Authentication.validUser(null, inputs[1])) {
-                break;
-            }
-            System.out.println("Email is used with another account. Try another email.");
-        }
-
-        while (true) {
             System.out.print("Enter username: ");
             inputs[1] = in.nextLine(); // username
-            if (!Authentication.validUser(inputs[0], null)) {
+            if (!Authentication.validUser(inputs[1], null)) {
                 break;
             }
             System.out.println("Username is taken. Try another username.");
@@ -142,23 +131,23 @@ public class ptui {
         while (true) {
             System.out.print("Enter password: ");
             inputs[2] =
-                    System.console() != null
-                            ? new String(System.console().readPassword())
-                            : in.nextLine();
+                System.console() != null
+                    ? new String(System.console().readPassword())
+                    : in.nextLine();
             System.out.print("Confirm password: ");
             String confirmed =
-                    System.console() != null
-                            ? new String(System.console().readPassword())
-                            : in.nextLine();
+                System.console() != null
+                    ? new String(System.console().readPassword())
+                    : in.nextLine();
             if (confirmed.equals(inputs[2])) {
                 break;
             }
-            System.out.println("Username is taken. Try another username.");
+            System.out.println("Passwords do not match. Try again");
         }
 
         System.out.print("Enter first name: ");
         inputs[3] = in.nextLine();
-        System.out.print("Enter first name: ");
+        System.out.print("Enter last name: ");
         inputs[4] = in.nextLine();
 
         return inputs;
@@ -177,9 +166,9 @@ public class ptui {
 
         System.out.print("Enter password: ");
         inputs[1] =
-                System.console() != null
-                        ? new String(System.console().readPassword())
-                        : in.nextLine();
+            System.console() != null
+                ? new String(System.console().readPassword())
+                : in.nextLine();
 
         return inputs;
     }
@@ -226,6 +215,13 @@ public class ptui {
         List<Song> songs = playlist.getSongs();
         for (int i = 0; i < songs.size(); i++) {
             System.out.println("Now playing: " + " -- " + (i + 1) + " -- " + songs.get(i));
+            RelationsManager.play(songs.get(i));
+
         }
+    }
+
+    public static void play(Song song) {
+        System.out.println("Now playing: " + " -- " + song);
+        RelationsManager.play(song);
     }
 }

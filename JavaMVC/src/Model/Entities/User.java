@@ -1,12 +1,10 @@
 package Model.Entities;
 
-import Controller.Application;
 import Controller.PostgresSSHTest.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

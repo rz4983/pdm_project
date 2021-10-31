@@ -33,11 +33,10 @@ public class Authentication {
         // TODO Auto-generated method stub
         // TODO call valid user check for values before creating query string
 
-        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String todaysdate = dateFormat.format(date);
-        System.out.println("Today's date : " + todaysdate);
 
         String QUERY =
             "insert into \"User\" values ('" + email + "', '" + username + "', '" + password
@@ -45,22 +44,14 @@ public class Authentication {
                 + lastName + "', 0)";
 
         // Try statement grabbing connection variable from database.java
-        try (Connection conn = Controller.PostgresSSHTest.Database.getConn()) {
-            // Create SQL statement
-            Statement stmt = conn.createStatement();
+        Connection conn = Controller.PostgresSSHTest.Database.getConn();
+        // Create SQL statement
+        Statement stmt = conn.createStatement();
 
-            // Create Result statement
-            boolean returnsResults = stmt.execute(QUERY);
+        // Create Result statement
+        boolean returnsResults = stmt.execute(QUERY);
 
-            // Throws sql exception if insert returns a value as it should not
-            if (returnsResults) {
-                throw SQLException;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return login(username, password);
+        return login(email, password);
     }
 
     /**
@@ -112,15 +103,18 @@ public class Authentication {
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String todaysdate = dateFormat.format(date);
-        System.out.println("Today's date : " + todaysdate);
 
         Statement dateUpdater = Database.getConn().createStatement();
+        String up = rs.getString("password");
 
-        stmt.executeUpdate(
+
+        if (!up.equals(password)) {
+            return null;
+        }
+
+        dateUpdater.executeUpdate(
             "UPDATE \"User\" SET \"lastAccessDate\" = '" + todaysdate + "' WHERE email = '"
                 + email + "'");
-
-        if (!rs.getString("password").equals(password)) return null;
 
         User user = new User(
             rs.getString("email"),
