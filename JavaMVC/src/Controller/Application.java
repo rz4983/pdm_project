@@ -202,7 +202,6 @@ public class Application {
                             break;
                         }
                         RelationsManager.createPlaylist(fields[1]);
-                        System.out.println("Create playlist " + fields[1]);
                     }
                     case "play" -> {
                         if (fields.length != 3 && fields.length != 4) {
