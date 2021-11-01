@@ -92,8 +92,9 @@ public class Application {
         System.out.print("> ");
         while (scanner.hasNextLine()) {
             text = scanner.nextLine();
-            String[] fields = split(text);
-            if (currentUser == null && Arrays
+            String[] fields = split(text.strip());
+            if (fields.length < 1) {}
+            else if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
                     "list", "share", "myfollowers", "whoifollow")
                 .contains(fields[0].toLowerCase())) {
