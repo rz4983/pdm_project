@@ -70,7 +70,7 @@ public class Album {
     }
 
     public String queryArtist() throws SQLException {
-        String checkQ = "Select get_album_artist('" + this.albumID + "')';";
+        String checkQ = "Select get_album_artist('" + this.albumID + "');";
 
         ResultSet rs = stmt.executeQuery(checkQ);
 
