@@ -130,6 +130,7 @@ public class Search {
                     + " WHERE \"Playlist\".\"playlistName\" ILIKE '%" + term + "%' AND"
                     + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND"
                     + "      \"Make\".email = '" + Application.getCurrentUser().getEmail() + "'"
+                    + " order by \"Playlist\".\"playlistName\" "
                     + " LIMIT " + limit);
 
         while (rs.next()) {
