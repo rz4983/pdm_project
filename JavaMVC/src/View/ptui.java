@@ -232,22 +232,22 @@ public class ptui {
 
     public static void searchSongs(List<Song> songs) throws SQLException {
         for (int i = 0; i < songs.size(); i++) {
-            RelationsManager.playSong(songs.get(i));
             System.out.println((i + 1) + " -- " + songs.get(i));
+            RelationsManager.playSong(songs.get(i));
         }
     }
 
     public static void play(Playlist playlist) throws SQLException {
         List<Song> songs = playlist.getSongs();
         for (int i = 0; i < songs.size(); i++) {
-            RelationsManager.playSong(songs.get(i));
             System.out.println("Now playing: " + " -- " + (i + 1) + " -- " + songs.get(i));
+            RelationsManager.playSong(songs.get(i));
         }
     }
 
     public static void play(Song song) throws SQLException {
-        RelationsManager.playSong(song);
         System.out.println("Now playing: " + " -- " + song);
+        RelationsManager.playSong(song);
     }
 
     public static void play(Album album) {
