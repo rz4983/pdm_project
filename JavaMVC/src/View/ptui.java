@@ -230,10 +230,9 @@ public class ptui {
         }
     }
 
-    public static void searchSongs(List<Song> songs) throws SQLException {
+    public static void searchSongs(List<Song> songs) {
         for (int i = 0; i < songs.size(); i++) {
             System.out.println((i + 1) + " -- " + songs.get(i));
-            RelationsManager.playSong(songs.get(i));
         }
     }
 
@@ -250,10 +249,13 @@ public class ptui {
         RelationsManager.playSong(song);
     }
 
-    public static void play(Album album) {
+    public static void play(Album album) throws SQLException {
         List<Song> songs = album.getSongs();
         for (int i = 0; i < songs.size(); i++) {
             System.out.println("Now playing: " + " -- " + (i + 1) + " -- " + songs.get(i));
+            RelationsManager.playSong(songs.get(i));
+
         }
     }
 }
+
