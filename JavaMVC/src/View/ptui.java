@@ -47,7 +47,7 @@ public class ptui {
             "\n\t\tplay song song-name\n\t\tplay song song-name playlist-name\n\t\tplay playlist playlist-name\n\t\tplay album album-name");
         System.out.println("follow      -- follow another-email");
         System.out.println("unfollow    -- unfollow another-email");
-        System.out.println("rename      -- rename <playlist ID> <new name>");
+        System.out.println("rename      -- rename playlist-name new-name");
         System.out.println(
             "add         -- \n\t\tadd song playlist-name song-name\n\t\tadd album playlist-name album-name");
         System.out.println(
