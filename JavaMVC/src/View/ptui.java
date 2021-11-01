@@ -65,7 +65,7 @@ public class ptui {
             + "\n\t\tsort category may have a minus (-) in front"
             + "\n\t\tto indicate descending order."
         );
-        System.out.println("whoifollow  -- Displays your followers");
+        System.out.println("whoifollow  -- Displays who you follow");
         System.out.println("myfollowers -- Displays your followers");
         System.out.println("limit       -- limit number.");
         System.out.println("help        -- Print this message.");
