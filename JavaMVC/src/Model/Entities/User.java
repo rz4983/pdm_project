@@ -123,7 +123,7 @@ public class User {
             .executeQuery(
                 "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\" WHERE "
                     + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND "
-                    + "      \"Make\".email = '" + email + "'");
+                    + "      \"Make\".email = '" + email + "'" + " order by \"Playlist\".\"playlistName\" ");
 
         while (rs.next()) {
             playlists.add(new Playlist(
