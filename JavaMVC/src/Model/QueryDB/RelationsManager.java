@@ -5,6 +5,7 @@ import Model.Entities.Album;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
@@ -58,10 +59,23 @@ public class RelationsManager {
     }
 
     public static void sharePlaylist(Playlist searchPlaylist, User searchUser) throws SQLException {
-        String sharePlaylist = "CALL share_playlist('" + searchPlaylist.getPlaylistID() + "', '" +
+        ResultSet rs = stmt
+            .executeQuery("SELECT \"Make\".* FROM \"Make\" where \"Make\".email = '" + searchUser
+                .getEmail() + "' and \"Make\".\"playlistID\" = '" + searchPlaylist.getPlaylistID()
+                + "';");
+
+        if (rs.next()) {
+            System.out.println(searchUser.getEmail() + " already has access to the playlist");
+            return;
+        }
+
+        String sharePlaylist =
+            "CALL share_playlist('" + searchPlaylist.getPlaylistID() + "', '" +
                 searchUser.getEmail() + "');";
         stmt.execute(sharePlaylist);
+        System.out.println("The playlist has been shared with " + searchUser.getEmail());
     }
+    
 
     public static void rename(Playlist searchPlaylist, String field) throws SQLException {
         String playlistID = searchPlaylist.getPlaylistID();
@@ -71,19 +85,19 @@ public class RelationsManager {
 
     public static void playSong(Song song) throws SQLException {
         String playSong = "CALL play_song('" + song.getSongID() + "', '"
-                + Controller.Application.getCurrentUser().getEmail() + "');";
+            + Controller.Application.getCurrentUser().getEmail() + "');";
         stmt.execute(playSong);
     }
 
     public static void playAlbum(Album album) throws SQLException {
         String playAlbum = "CALL play_album('" + album.getAlbumID() + "', '"
-                + Controller.Application.getCurrentUser().getEmail() + "');";
+            + Controller.Application.getCurrentUser().getEmail() + "');";
         stmt.execute(playAlbum);
     }
 
     public static void playPlaylist(Playlist playlist) throws SQLException {
         String playPlaylist = "CALL play_playlist('" + playlist.getPlaylistID() + "', '"
-                + Controller.Application.getCurrentUser().getEmail() + "');";
+            + Controller.Application.getCurrentUser().getEmail() + "');";
         stmt.execute(playPlaylist);
     }
 
@@ -93,7 +107,8 @@ public class RelationsManager {
         String createPlaylist = "INSERT INTO \"Playlist\" VALUES ('"
             + id + "' , '"
             + playlistName + "');"
-            + " INSERT INTO \"Make\" VALUES ('" + Application.getCurrentUser().getEmail() + "', '"
+            + " INSERT INTO \"Make\" VALUES ('" + Application.getCurrentUser().getEmail()
+            + "', '"
             + id +
             "'); ";
 

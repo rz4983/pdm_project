@@ -435,7 +435,6 @@ public class Application {
                             break;
                         }
                         RelationsManager.sharePlaylist(playlist, friend);
-                        System.out.println("The playlist has been shared with " + fields[2]);
                     }
 
                     case "whoifollow" -> {
