@@ -241,7 +241,7 @@ public class Application {
                                     : ptui.pickSong(searchResultSong);
 
                                 ptui.play(song);
-                                RelationsManager.playSong(song);
+//                                RelationsManager.playSong(song);
                             }
 
                             case "playlist" -> {
@@ -258,7 +258,7 @@ public class Application {
                                 Playlist playlist =
                                     searchResultPlaylist.size() == 1 ? searchResultPlaylist.get(0)
                                         : ptui.pickPlaylist(searchResultPlaylist);
-                                ptui.play(playlist);
+//                                ptui.play(playlist);
                             }
 
                             case "album" -> {
@@ -275,7 +275,7 @@ public class Application {
                                 Album album =
                                     searchResultAlbum.size() == 1 ? searchResultAlbum.get(0)
                                         : ptui.pickAlbum(searchResultAlbum);
-                                ptui.play(album);
+//                                ptui.play(album);
                             }
                         }
                     }
