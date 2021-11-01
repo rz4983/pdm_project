@@ -93,6 +93,9 @@ public class Application {
         while (scanner.hasNextLine()) {
             text = scanner.nextLine();
             String[] fields = split(text.strip());
+            for (int i = 0; i < fields.length; i++) {
+                fields[i] = fields[i].replace("'", "\''");//HT5jo4Xau
+            }
             if (fields.length < 1) {}
             else if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
