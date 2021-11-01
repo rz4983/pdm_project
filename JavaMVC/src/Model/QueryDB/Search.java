@@ -46,7 +46,7 @@ public class Search {
         String orderBy = "order by " + switch (sort.toLowerCase()) {
             default -> {
                 artistReq = true;
-                yield "\"Song\".\"title\",  \"Artist\".\"artistName\" ";
+                yield "\"Song\".\"title\" "+ (ascending ? "ASC" : "DESC") +",  \"Artist\".\"artistName\" ";
             }
             case "artist" -> "\"Artist\".\"artistName\" ";
             case "genre" -> "\"Genre\".\"genreName\" ";
