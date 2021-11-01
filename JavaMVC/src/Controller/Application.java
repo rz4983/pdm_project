@@ -103,7 +103,6 @@ public class Application {
                 switch (fields[0].toLowerCase()) {
                     case "login" -> {
                         String[] info = ptui.login();
-                        System.out.println(Arrays.toString(info));
                         if (Authentication.validUser(null, info[0])) {
                             currentUser = Authentication.login(info[0], info[1]);
                             if (currentUser == null) {
