@@ -48,9 +48,9 @@ public class Song {
     }
 
     public String queryArtist() throws SQLException {
-        String checkQ = "Select get_song_artist('" + this.songID +"');";
+        String query = "Select get_song_artist('" + this.songID +"');";
 
-        ResultSet rs = stmt.executeQuery(checkQ);
+        ResultSet rs = stmt.executeQuery(query);
 
         String songArtist = "";
         while (rs.next()) {
@@ -67,7 +67,7 @@ public class Song {
         return songID;
     }
 
-    public int getNumPlayed() throws SQLException {
+    public int queryNumPlayed() throws SQLException {
         int numPlays = 0;
         String getCount = "SELECT COUNT(*) FROM \"Plays\" WHERE \"songID\" = '" + this.songID + "';";
 
@@ -79,6 +79,23 @@ public class Song {
         return numPlays;
     }
 
+    public String queryAlbum() throws SQLException{
+        String query = "Select get_song_album('" + this.songID +"');";
+
+        ResultSet rs = stmt.executeQuery(query);
+
+        String songAlbum = "";
+
+        while (rs.next()){
+            songAlbum = rs.getString("get_song_album");
+        }
+        if (songAlbum == null || songAlbum.equals("")){
+            songAlbum = "N/A";
+        }
+
+        return songAlbum;
+    }
+
     /**
      * @return TODO
      */
@@ -86,8 +103,9 @@ public class Song {
     public String toString()  {
 
         try {
-            return String.format("Song: %s -- Artist: %s -- Minutes: %.2f -- Release Date: %s -- Number of plays: %d", title, queryArtist(),
-                    length / 1000.0 / 60, songReleaseDate, getNumPlayed());
+            return String.format("Song: %s -- Artist: %s -- Album: %s -- Minutes: %.2f -- Release Date: %s -- " +
+                            "Number of plays: %d", title, queryArtist(), queryAlbum(),
+                    length / 1000.0 / 60, songReleaseDate, queryNumPlayed());
         } catch (SQLException ignore) {}
         return "SQL Exception";
     }
