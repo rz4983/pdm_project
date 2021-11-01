@@ -24,7 +24,6 @@ public class RelationsManager {
         try {
             stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -75,7 +74,7 @@ public class RelationsManager {
         stmt.execute(sharePlaylist);
         System.out.println("The playlist has been shared with " + searchUser.getEmail());
     }
-    
+
 
     public static void rename(Playlist searchPlaylist, String field) throws SQLException {
         String playlistID = searchPlaylist.getPlaylistID();

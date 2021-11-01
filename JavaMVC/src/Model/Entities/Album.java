@@ -25,7 +25,6 @@ public class Album {
         try {
             stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -109,7 +108,6 @@ public class Album {
                 songs.add(newSong);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         // return list
@@ -125,7 +123,6 @@ public class Album {
             return String.format("Album: %s -- Author: %s -- Release Date: %s", this.title,
                     queryArtist(), this.AlbumReleaseDate);
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return "SQL Exception";
     }

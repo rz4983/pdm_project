@@ -24,7 +24,6 @@ public class User {
         try {
             stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

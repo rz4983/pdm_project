@@ -29,7 +29,6 @@ public class Song {
         try {
             stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

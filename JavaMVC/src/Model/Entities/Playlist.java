@@ -24,7 +24,6 @@ public class Playlist {
         try {
             stmt = Controller.PostgresSSHTest.Database.getConn().createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -70,7 +69,6 @@ public class Playlist {
                 songs.add(newSong);
              }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         // return list
@@ -82,7 +80,7 @@ public class Playlist {
      */
     @Override
     public String toString() {
-        return String.format("Playlist: %s -- Number of songs: %s -- Runtime %s", this.name, getSongs().size(), this.runtime / 1000.0 / 60);
+        return String.format("Playlist: %s -- Number of songs: %s -- Runtime %s", this.name, getSongs().size(), Math.round(this.runtime / 100.0 / 60) / 10.0);
     }
 
     public String getPlaylistID() {
