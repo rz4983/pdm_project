@@ -303,6 +303,10 @@ public class Application {
                             System.out.println("Usage: unfollow another-email");
                             break;
                         }
+                        if (fields[1].equals(currentUser.getEmail())) {
+                            System.out.println("Cannot follow yourself.");
+                            break;
+                        }
                         User following = Search.searchUser(fields[1]);
                         if (following == null) {
                             System.out.println("No user with the email " + fields[1]);
