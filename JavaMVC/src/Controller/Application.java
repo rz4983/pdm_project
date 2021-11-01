@@ -313,7 +313,6 @@ public class Application {
                             break;
                         }
                         currentUser.removeFriend(following);
-                        System.out.println("You are no longer following " + following.getName());
                     }
                     case "rename" -> {
                         if (fields.length != 3) {

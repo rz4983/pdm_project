@@ -85,15 +85,35 @@ public class User {
     }
 
     public void addFriend(User user) throws SQLException {
+        ResultSet rs = stmt
+            .executeQuery("SELECT * \"FollowsUser\" "
+                + "WHERE \"followerEmail\" = '" + email + "' "
+                + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
+
+        if (rs.next()) {
+            System.out.println("You already follow " + user.getEmail());
+            return;
+        }
         String query = "CALL add_follower('" + this.email + "', '" + user.getEmail() + "');";
         stmt.execute(query);
         this.userNumFollowers++;
+        System.out.println("You are now following " + user.getEmail());
     }
 
     public void removeFriend(User user) throws SQLException {
+        ResultSet rs = stmt
+            .executeQuery("SELECT * \"FollowsUser\" "
+                + "WHERE \"followerEmail\" = '" + email + "' "
+                + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
+
+        if (rs.next()) {
+            System.out.println("You don't follow " + user.getEmail() + ".");
+            return;
+        }
         String query = "CALL remove_follower('" + this.email + "', '" + user.getEmail() + "');";
         stmt.execute(query);
         this.userNumFollowers--;
+        System.out.println("You are no longer following " + user.getEmail());
     }
 
     public List<Playlist> getPlaylists() throws SQLException {
@@ -127,7 +147,7 @@ public class User {
             "email: " + email + ' ' +
             "-- username: " + username + ' ' +
             "-- name: " + firstName + ' '
-             + lastName + ' ' +
+            + lastName + ' ' +
             "-- followers: " + userNumFollowers;
     }
 
@@ -149,7 +169,7 @@ public class User {
                 rs.getString("password"),
                 rs.getString("creationDate"),
                 rs.getString("lastAccessDate"),
-                rs.getString("firstName" ) + rs.getString("firstName" ),
+                rs.getString("firstName") + rs.getString("firstName"),
                 rs.getInt("userNumFollowers")
             ));
         }
