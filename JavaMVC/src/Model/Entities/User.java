@@ -86,7 +86,7 @@ public class User {
 
     public void addFriend(User user) throws SQLException {
         ResultSet rs = stmt
-            .executeQuery("SELECT * \"FollowsUser\" "
+            .executeQuery("SELECT * FROM \"FollowsUser\" "
                 + "WHERE \"followerEmail\" = '" + email + "' "
                 + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
 
@@ -102,11 +102,11 @@ public class User {
 
     public void removeFriend(User user) throws SQLException {
         ResultSet rs = stmt
-            .executeQuery("SELECT * \"FollowsUser\" "
+            .executeQuery("SELECT * FROM \"FollowsUser\" "
                 + "WHERE \"followerEmail\" = '" + email + "' "
                 + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
 
-        if (rs.next()) {
+        if (!rs.next()) {
             System.out.println("You don't follow " + user.getEmail() + ".");
             return;
         }
