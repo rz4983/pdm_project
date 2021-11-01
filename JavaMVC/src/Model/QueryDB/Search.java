@@ -46,7 +46,8 @@ public class Search {
         String orderBy = "order by " + switch (sort.toLowerCase()) {
             default -> {
                 artistReq = true;
-                yield "\"Song\".\"title\" "+ (ascending ? "ASC" : "DESC") +",  \"Artist\".\"artistName\" ";
+                yield "\"Song\".\"title\" " + (ascending ? "ASC" : "DESC")
+                    + ",  \"Artist\".\"artistName\" ";
             }
             case "artist" -> "\"Artist\".\"artistName\" ";
             case "genre" -> "\"Genre\".\"genreName\" ";
@@ -128,7 +129,8 @@ public class Search {
                 "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\""
                     + " WHERE \"Playlist\".\"playlistName\" ILIKE '%" + term + "%' AND"
                     + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND"
-                    + "      \"Make\".email = '" + Application.getCurrentUser().getEmail() + "'");
+                    + "      \"Make\".email = '" + Application.getCurrentUser().getEmail() + "'"
+                    + " LIMIT " + limit);
 
         while (rs.next()) {
             playlists.add(new Playlist(
@@ -171,7 +173,8 @@ public class Search {
         Statement stmt = Database.getConn().createStatement();
         ResultSet rs = stmt
             .executeQuery(
-                "SELECT \"Album\".* FROM \"Album\" WHERE \"albumName\" ILIKE '%" + term + "%'");
+                "SELECT \"Album\".* FROM \"Album\" WHERE \"albumName\" ILIKE '%" + term + "%' "
+                    + " LIMIT " + limit);
 
         while (rs.next()) {
             albums.add(new Album(
@@ -197,7 +200,8 @@ public class Search {
                 + "      \"User\".email = \"Make\".email AND"
                 + "      \"Song\".title ILIKE '%" + term + "%' AND"
                 + "      \"Song\".\"songID\" = \"Contains\".\"songID\" AND"
-                + "      \"User\".email = '" + Application.getCurrentUser().getEmail() + "'";
+                + "      \"User\".email = '" + Application.getCurrentUser().getEmail() + "'"
+                + " LIMIT " + limit;
 
         ResultSet rs = stmt
             .executeQuery(query);
