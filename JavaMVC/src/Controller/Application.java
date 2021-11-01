@@ -420,7 +420,7 @@ public class Application {
                             System.out.println("Usage: share playlist-name email");
                             break;
                         }
-                        List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[2]);
+                        List<Playlist> searchResultPlaylist = Search.searchPlaylist(fields[1]);
                         if (searchResultPlaylist.size() == 0) {
                             System.out.println("No playlist " + fields[1]);
                             break;
@@ -431,7 +431,7 @@ public class Application {
 
                         User friend = Search.searchUser(fields[2]);
                         if (friend == null) {
-                            System.out.println("No user with the email " + fields[1]);
+                            System.out.println("No user with the email " + fields[2]);
                             break;
                         }
                         RelationsManager.sharePlaylist(playlist, friend);
