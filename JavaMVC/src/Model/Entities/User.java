@@ -196,4 +196,21 @@ public class User {
         }
         return users;
     }
+
+    public int getNumPlaylists() throws SQLException{
+        String query = "CALL num_playlists('" + this.email + "')";
+        return stmt.executeQuery(query).getInt(1);
+    }
+
+    public int getNumFollowers() throws SQLException{
+        return num_followers(this.email);
+    }
+
+    public int getNumFollowings() throws SQLException{
+        return num_followings();
+    }
+
+    public List<Artist> getArtistPlayed() throws  SQLException{
+
+    }
 }
