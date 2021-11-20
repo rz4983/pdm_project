@@ -157,7 +157,8 @@ public class User {
                         "email: " + email + ' ' +
                         "-- username: " + username + ' ' +
                         "-- name: " + this.getName() + ' ' +
-                        "-- followers: " + this.getNumFollowers() +
+                        "-- number of playlists : " + this.getNumPlaylists() + ' ' +
+                        "-- followers: " + this.getNumFollowers() + ' ' +
                         "-- users followed: " + this.getNumFollowings() + ' ' +
                         "-- top ten artists: ");
 
