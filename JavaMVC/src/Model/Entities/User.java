@@ -203,14 +203,14 @@ public class User {
     }
 
     public int getNumFollowers() throws SQLException{
-        return num_followers(this.email);
+        String query = "CALL num_followers('" + this.email + "')";
+        return stmt.executeQuery(query).getInt(1);
     }
 
     public int getNumFollowings() throws SQLException{
-        return num_followings();
+        String query = "CALL num_followings('" + this.email + "')";
+        return stmt.executeQuery(query).getInt(1);
     }
 
-    public List<Artist> getArtistPlayed() throws  SQLException{
 
-    }
 }
