@@ -1,6 +1,11 @@
 package Controller;
 
+import static Controller.PostgresSSHTest.Database.closeConn;
+import static Controller.PostgresSSHTest.Database.getConn;
+import static Controller.PostgresSSHTest.Database.openConn;
+
 import Model.Entities.Album;
+import Model.Entities.Genre;
 import Model.Entities.Playlist;
 import Model.Entities.Song;
 import Model.Entities.User;
@@ -8,8 +13,8 @@ import Model.QueryDB.Authentication;
 import Model.QueryDB.RelationsManager;
 import Model.QueryDB.Search;
 import View.ptui;
-
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,14 +23,19 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static Controller.PostgresSSHTest.Database.*;
-
 public class Application {
 
     private static User currentUser;
     private static int times = 1;
 
     Application() {
+        if (ManagementFactory.
+            getRuntimeMXBean().
+            getInputArguments().toString().contains("jdwp")) {
+            try {
+                currentUser = Authentication.login("ginsleyiu@mit.edu", "HT5jo4Xau");
+            } catch (SQLException ignore) {}
+        } else
         currentUser = null;
     }
 
@@ -95,8 +105,8 @@ public class Application {
             for (int i = 0; i < fields.length; i++) {
                 fields[i] = fields[i].replace("'", "\''");//HT5jo4Xau
             }
-            if (fields.length < 1) {}
-            else if (currentUser == null && Arrays
+            if (fields.length < 1) {
+            } else if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
                     "list", "share", "myfollowers", "whoifollow")
                 .contains(fields[0].toLowerCase())) {
@@ -481,6 +491,52 @@ public class Application {
                     case "quit" -> {
                         System.out.println("Exiting session.");
                         return;
+                    }
+
+                    case "recommend", "rec" -> {
+                        if (fields.length != 2) {
+                            System.out.println("""
+                                Usage:\s
+                                \trec[ommend]   past-30-days 
+                                \trec[ommend]   friends      
+                                \trec[ommend]   genres         
+                                \trec[ommend]   history""");
+                            break;
+                        }
+                        switch (fields[1].toLowerCase()) {
+                            case "past-30-days" -> {
+                                ptui.searchSongs(new ArrayList<>()); // TODO
+                            }
+                            case "friends" -> {
+                                ptui.searchSongs(new ArrayList<>()); // TODO
+                            }
+                            case "genres" -> {
+                                List<Genre> res = new ArrayList<>();
+                                for (int i = 0; i < res.size(); i++) {
+                                    System.out.println(i + " -- " + res.get(i));
+                                }
+                            }
+                            case "history" -> {
+                                List<Song> res = new ArrayList<>();
+                                ptui.searchSongs(res);
+                            }
+
+                            case "similar" -> {
+                                List<Song> res = new ArrayList<>();
+                                ptui.searchSongs(res);
+                            }
+                            default -> {
+                                System.out.println("Illegal command usage.");
+                            }
+                        }
+                    }
+
+                    case "myprofile" -> {
+                        if (fields.length != 1) {
+                            System.out.println("Usage: myprofile");
+                            break;
+                        }
+                        System.out.println(currentUser.displayProfile());
                     }
                 }
             }

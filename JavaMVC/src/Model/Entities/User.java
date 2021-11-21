@@ -1,7 +1,6 @@
 package Model.Entities;
 
 import Controller.PostgresSSHTest.Database;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -69,13 +68,13 @@ public class User {
      * @param userNumFollowers number of followers this user has
      */
     public User(
-            String email,
-            String username,
-            String creationDate,
-            String lastAccessDate,
-            String firstName,
-            String lastName,
-            long userNumFollowers) {
+        String email,
+        String username,
+        String creationDate,
+        String lastAccessDate,
+        String firstName,
+        String lastName,
+        long userNumFollowers) {
         this.email = email;
         this.username = username;
         this.creationDate = creationDate;
@@ -87,9 +86,9 @@ public class User {
 
     public void addFriend(User user) throws SQLException {
         ResultSet rs = stmt
-                .executeQuery("SELECT * FROM \"FollowsUser\" "
-                        + "WHERE \"followerEmail\" = '" + email + "' "
-                        + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
+            .executeQuery("SELECT * FROM \"FollowsUser\" "
+                + "WHERE \"followerEmail\" = '" + email + "' "
+                + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
 
         if (rs.next()) {
             System.out.println("You already follow " + user.getEmail());
@@ -102,9 +101,9 @@ public class User {
 
     public void removeFriend(User user) throws SQLException {
         ResultSet rs = stmt
-                .executeQuery("SELECT * FROM \"FollowsUser\" "
-                        + "WHERE \"followerEmail\" = '" + email + "' "
-                        + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
+            .executeQuery("SELECT * FROM \"FollowsUser\" "
+                + "WHERE \"followerEmail\" = '" + email + "' "
+                + "AND \"followeeEmail\" = '" + user.getEmail() + "'");
 
         if (!rs.next()) {
             System.out.println("You don't follow " + user.getEmail() + ".");
@@ -119,16 +118,17 @@ public class User {
         ArrayList<Playlist> playlists = new ArrayList<>();
         Statement stmt = Database.getConn().createStatement();
         ResultSet rs = stmt
-                .executeQuery(
-                        "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\" WHERE "
-                                + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND "
-                                + "      \"Make\".email = '" + email + "'" + " order by \"Playlist\".\"playlistName\" ");
+            .executeQuery(
+                "SELECT \"Playlist\".* FROM \"Make\", \"Playlist\" WHERE "
+                    + "      \"Make\".\"playlistID\" = \"Playlist\".\"playlistID\" AND "
+                    + "      \"Make\".email = '" + email + "'"
+                    + " order by \"Playlist\".\"playlistName\" ");
 
         while (rs.next()) {
             playlists.add(new Playlist(
-                    rs.getString("playlistID"),
-                    rs.getString("playlistName"),
-                    rs.getInt("runtime")
+                rs.getString("playlistID"),
+                rs.getString("playlistName"),
+                rs.getInt("runtime")
             ));
         }
 
@@ -160,7 +160,9 @@ public class User {
                         "-- top ten artists: ");
 
         for (Artist artist : this.getTopArtistsBoth()) // TODO unsure which getTopArtist to use
+        {
             profile.append("\n\t").append(artist);
+        }
 
         return profile.toString();
     }
@@ -172,19 +174,19 @@ public class User {
     public List<User> getFollowers() throws SQLException {
         List<User> users = new ArrayList<>();
         ResultSet rs = stmt
-                .executeQuery("SELECT \"User\".* FROM \"User\", \"FollowsUser\" "
-                        + "WHERE \"followeeEmail\" = '" + email + "' "
-                        + "AND \"User\".email = \"followerEmail\"");
+            .executeQuery("SELECT \"User\".* FROM \"User\", \"FollowsUser\" "
+                + "WHERE \"followeeEmail\" = '" + email + "' "
+                + "AND \"User\".email = \"followerEmail\"");
 
         while (rs.next()) {
             users.add(new User(
-                    rs.getString("email"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("creationDate"),
-                    rs.getString("lastAccessDate"),
-                    rs.getString("firstName") + rs.getString("firstName"),
-                    rs.getInt("userNumFollowers")
+                rs.getString("email"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getString("creationDate"),
+                rs.getString("lastAccessDate"),
+                rs.getString("firstName") + rs.getString("firstName"),
+                rs.getInt("userNumFollowers")
             ));
         }
         return users;
@@ -193,19 +195,19 @@ public class User {
     public List<User> getFollowees() throws SQLException {
         List<User> users = new ArrayList<>();
         ResultSet rs = stmt
-                .executeQuery("SELECT \"User\".* FROM \"User\", \"FollowsUser\" "
-                        + "WHERE \"followerEmail\" = '" + email + "' "
-                        + "AND \"User\".email = \"followeeEmail\"");
+            .executeQuery("SELECT \"User\".* FROM \"User\", \"FollowsUser\" "
+                + "WHERE \"followerEmail\" = '" + email + "' "
+                + "AND \"User\".email = \"followeeEmail\"");
 
         while (rs.next()) {
             users.add(new User(
-                    rs.getString("email"),
-                    rs.getString("username"),
-                    rs.getString("creationDate"),
-                    rs.getString("lastAccessDate"),
-                    rs.getString("firstName"),
-                    rs.getString("lastName"),
-                    rs.getInt("userNumFollowers")
+                rs.getString("email"),
+                rs.getString("username"),
+                rs.getString("creationDate"),
+                rs.getString("lastAccessDate"),
+                rs.getString("firstName"),
+                rs.getString("lastName"),
+                rs.getInt("userNumFollowers")
             ));
         }
         return users;
@@ -223,8 +225,10 @@ public class User {
 
     public int getNumFollowers() {
         try {
-            String query = "CALL num_followers('" + this.email + "')";
-            return stmt.executeQuery(query).getInt(1);
+            String query = "select * from num_followers('" + this.email + "')";
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getInt(1);
         } catch (SQLException e) {
         }
 
@@ -233,8 +237,10 @@ public class User {
 
     public int getNumFollowings() {
         try {
-            String query = "CALL num_followings('" + this.email + "')";
-            return stmt.executeQuery(query).getInt(1);
+            String query = "select * from num_followings('" + this.email + "')";
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getInt(1);
         } catch (SQLException e) {
         }
 
@@ -244,8 +250,8 @@ public class User {
     public List<Artist> getTopArtistsPlayed() {
         List<Artist> topArtists = new ArrayList<>();
         try {
-            ResultSet rs = stmt.executeQuery("Call top_artists_played('" + this.email + "')");
-
+            ResultSet rs = stmt
+                .executeQuery("select * from top_artists_played('" + this.email + "')");
 
             while (rs.next()) {
                 topArtists.add(new Artist(
@@ -261,11 +267,12 @@ public class User {
     public List<Artist> getTopArtistCollections() {
         List<Artist> topArtists = new ArrayList<>();
         try {
-            ResultSet rs = stmt.executeQuery("Call top_artists_collections('" + this.email + "')");
+            ResultSet rs = stmt
+                .executeQuery("select * from top_artists_collections('" + this.email + "')");
 
             while (rs.next()) {
                 topArtists.add(new Artist(
-                        rs.getString("name")
+                    rs.getString("name")
                 ));
             }
         } catch (SQLException e) {
@@ -277,11 +284,11 @@ public class User {
     public List<Artist> getTopArtistsBoth() {
         List<Artist> topArtists = new ArrayList<>();
         try {
-            ResultSet rs = stmt.executeQuery("Call top_artists_both('" + this.email + "')");
+        ResultSet rs = stmt.executeQuery("select * from top_artists_both('" + this.email + "')");
 
             while (rs.next()) {
                 topArtists.add(new Artist(
-                        rs.getString("name")
+                    rs.getString("name")
                 ));
             }
         } catch (SQLException e) {
