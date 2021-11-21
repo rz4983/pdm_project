@@ -105,12 +105,12 @@ public class Application {
             text = scanner.nextLine();
             String[] fields = split(text.strip());
             for (int i = 0; i < fields.length; i++) {
-                fields[i] = fields[i].replace("'", "\''");//HT5jo4Xau
+                fields[i] = fields[i].replaceAll("'", "\''");
             }
             if (fields.length < 1) {
             } else if (currentUser == null && Arrays
                 .asList("logout", "create", "play", "follow", "unfollow", "rename", "add", "remove",
-                    "list", "share", "myfollowers", "whoifollow")
+                    "list", "share", "myfollowers", "whoifollow", "rec", "myprofile", "recommend")
                 .contains(fields[0].toLowerCase())) {
                 System.out.println("Must be logged in to perform this action.");
             } else {

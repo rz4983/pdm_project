@@ -216,7 +216,9 @@ public class User {
     public int getNumPlaylists() {
         try {
             String query = "select * from num_playlists('" + this.email + "')";
-            return stmt.executeQuery(query).getInt(1);
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getInt(1);
         } catch (SQLException e) {
         }
 
