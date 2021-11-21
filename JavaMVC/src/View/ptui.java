@@ -67,6 +67,13 @@ public class ptui {
         );
         System.out.println("whoifollow  -- Displays who you follow");
         System.out.println("myfollowers -- Displays your followers");
+        System.out.println("recommend   -- The recommendation system" +
+                                "\n\t\trec[ommend] past-30-days"+
+                                "\n\t\trec[ommend] friends"+
+                                "\n\t\trec[ommend] genres"+
+                                "\n\t\trec[ommend] history"
+        );
+        System.out.println("myprofile   -- display your profile");
         System.out.println("limit       -- limit number.");
         System.out.println("help        -- Print this message.");
         System.out.println("quit        -- Exit the application.");

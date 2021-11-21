@@ -215,7 +215,7 @@ public class User {
 
     public int getNumPlaylists() {
         try {
-            String query = "CALL num_playlists('" + this.email + "')";
+            String query = "select * from num_playlists('" + this.email + "')";
             return stmt.executeQuery(query).getInt(1);
         } catch (SQLException e) {
         }
@@ -288,7 +288,7 @@ public class User {
 
             while (rs.next()) {
                 topArtists.add(new Artist(
-                    rs.getString("name")
+                    rs.getString("artistName")
                 ));
             }
         } catch (SQLException e) {
@@ -300,7 +300,7 @@ public class User {
     public List<Song> getTopFriendsSongs() {
         List<Song> topFriendsSongs = new ArrayList<>();
         try {
-            ResultSet rs = stmt.executeQuery("Call top_friends_songs('" + this.email + "')");
+            ResultSet rs = stmt.executeQuery("select * from top_friends_songs('" + this.email + "')");
 
             while (rs.next()) {
                 topFriendsSongs.add(new Song(
@@ -319,7 +319,7 @@ public class User {
     public List<Song> getRecommendedSongs() {
         List<Song> recommendedSongs = new ArrayList<>();
         try {
-            ResultSet rs = stmt.executeQuery("Call recommend_song_from_genre('" + this.email + "')");
+            ResultSet rs = stmt.executeQuery("select * from recommend_song_from_genre('" + this.email + "')");
 
             while (rs.next()) {
                 recommendedSongs.add(new Song(

@@ -1,6 +1,7 @@
 package Model.QueryDB;
 
 
+import Model.Entities.Genre;
 import Model.Entities.Song;
 
 import java.sql.ResultSet;
@@ -28,18 +29,20 @@ public class Recommendation {
         }
     }
 
-    private String getDate(){
+    private static String getDate(){
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Calendar cal = Calendar.getInstance();
             Date date = cal.getTime();
-        return dateFormat.format(date);
+            date.setMonth((date.getMonth() - 1) % 12);
+            return "2000-01-01";
+//        return dateFormat.format(date);
     }
 
 
-    public List<Song> getTopRollingSongs() {
+    public static List<Song> getTopRollingSongs() {
         List<Song> topRollingSongs = new ArrayList<>();
         try {
-            ResultSet rs = stmt.executeQuery("Call top_rolling_songs('" + this.getDate() + "')");
+            ResultSet rs = stmt.executeQuery("select * from top_rolling_songs('" + getDate() + "')");
 
             while (rs.next()) {
                 topRollingSongs.add(new Song(
@@ -50,23 +53,22 @@ public class Recommendation {
                 ));
             }
         } catch (SQLException e) {
+            System.out.println(e);
         }
 
         return topRollingSongs;
     }
 
-    public List<Song> getTopGenreSongs() {
-        List<Song> topGenreSongs = new ArrayList<>();
-        String date = this.getDate().substring(0, 8) + "01";
+    public static List<Genre> getTopGenreSongs() {
+        List<Genre> topGenreSongs = new ArrayList<>();
+        String date = getDate().substring(0, 8) + "01";
         try {
-            ResultSet rs = stmt.executeQuery("Call top_genres('" + this.getDate().substring(0, 8) + "01" + "')");
+            ResultSet rs = stmt.executeQuery("select * from top_genres('" + getDate().substring(0, 8) + "01" + "')");
 
             while (rs.next()) {
-                topGenreSongs.add(new Song(
-                        rs.getString("songID"),
-                        rs.getInt("length"),
-                        rs.getString("title"),
-                        rs.getString("songReleaseDate")
+                topGenreSongs.add(new Genre(
+                        rs.getString("genreID"),
+                        rs.getString("genreName")
                 ));
             }
         } catch (SQLException e) {

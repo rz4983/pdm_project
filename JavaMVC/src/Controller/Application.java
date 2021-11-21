@@ -3,6 +3,8 @@ package Controller;
 import static Controller.PostgresSSHTest.Database.closeConn;
 import static Controller.PostgresSSHTest.Database.getConn;
 import static Controller.PostgresSSHTest.Database.openConn;
+import static Model.QueryDB.Recommendation.getTopGenreSongs;
+import static Model.QueryDB.Recommendation.getTopRollingSongs;
 
 import Model.Entities.Album;
 import Model.Entities.Genre;
@@ -505,24 +507,19 @@ public class Application {
                         }
                         switch (fields[1].toLowerCase()) {
                             case "past-30-days" -> {
-                                ptui.searchSongs(new ArrayList<>()); // TODO
+                                ptui.searchSongs(getTopRollingSongs());
                             }
                             case "friends" -> {
-                                ptui.searchSongs(new ArrayList<>()); // TODO
+                                ptui.searchSongs(currentUser.getTopFriendsSongs()); // TODO
                             }
                             case "genres" -> {
-                                List<Genre> res = new ArrayList<>();
-                                for (int i = 0; i < res.size(); i++) {
+                                List<Genre> res = getTopGenreSongs();
+                                for (int i = 1; i <= res.size(); i++) {
                                     System.out.println(i + " -- " + res.get(i));
                                 }
                             }
                             case "history" -> {
-                                List<Song> res = new ArrayList<>();
-                                ptui.searchSongs(res);
-                            }
-
-                            case "similar" -> {
-                                List<Song> res = new ArrayList<>();
+                                List<Song> res = currentUser.getRecommendedSongs();
                                 ptui.searchSongs(res);
                             }
                             default -> {
