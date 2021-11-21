@@ -120,5 +120,9 @@ public class RelationsManager {
         String deletePlaylist = "CALL delete_playlist('" + playlist.getPlaylistID() + "');";
         stmt.execute(deletePlaylist);
     }
+
+    public static void profile(User user){
+
+    }
 }
 

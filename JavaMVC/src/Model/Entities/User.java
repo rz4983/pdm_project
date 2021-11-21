@@ -142,7 +142,6 @@ public class User {
         return email;
     }
 
-    // TODO
     public String toString() {
         return "User: " +
                 "email: " + email + ' ' +
@@ -261,7 +260,7 @@ public class User {
         return topArtists;
     }
 
-    public List<Artist> getTopArtistCollections() throws SQLException {
+    public List<Artist> getTopArtistCollections() {
         List<Artist> topArtists = new ArrayList<>();
         try {
             ResultSet rs = stmt.executeQuery("Call top_artists_collections('" + this.email + "')");
@@ -277,7 +276,7 @@ public class User {
         return topArtists;
     }
 
-    public List<Artist> getTopArtistsBoth() throws SQLException {
+    public List<Artist> getTopArtistsBoth() {
         List<Artist> topArtists = new ArrayList<>();
         try {
             ResultSet rs = stmt.executeQuery("Call top_artists_both('" + this.email + "')");
@@ -291,5 +290,24 @@ public class User {
         }
 
         return topArtists;
+    }
+
+    public List<Song> getTopFriendsSongs() {
+        List<Song> topFriendsSongs = new ArrayList<>();
+        try {
+            ResultSet rs = stmt.executeQuery("Call top_friends_songs('" + this.email + "')");
+
+            while (rs.next()) {
+                topFriendsSongs.add(new Song(
+                        rs.getString("songID"),
+                        rs.getInt("length"),
+                        rs.getString("title"),
+                        rs.getString("songReleaseDate")
+                ));
+            }
+        } catch (SQLException e) {
+        }
+
+        return topFriendsSongs;
     }
 }
