@@ -97,7 +97,6 @@ public class User {
         }
         String query = "CALL add_follower('" + this.email + "', '" + user.getEmail() + "');";
         stmt.execute(query);
-        this.userNumFollowers++;
         System.out.println("You are now following " + user.getEmail());
     }
 
@@ -113,7 +112,6 @@ public class User {
         }
         String query = "CALL remove_follower('" + this.email + "', '" + user.getEmail() + "');";
         stmt.execute(query);
-        this.userNumFollowers--;
         System.out.println("You are no longer following " + user.getEmail());
     }
 
@@ -309,5 +307,24 @@ public class User {
         }
 
         return topFriendsSongs;
+    }
+
+    public List<Song> getRecommendedSongs() {
+        List<Song> recommendedSongs = new ArrayList<>();
+        try {
+            ResultSet rs = stmt.executeQuery("Call recommend_song_from_genre('" + this.email + "')");
+
+            while (rs.next()) {
+                recommendedSongs.add(new Song(
+                        rs.getString("songID"),
+                        rs.getInt("length"),
+                        rs.getString("title"),
+                        rs.getString("songReleaseDate")
+                ));
+            }
+        } catch (SQLException e) {
+        }
+
+        return recommendedSongs;
     }
 }
