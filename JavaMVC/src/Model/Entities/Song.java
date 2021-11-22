@@ -116,7 +116,7 @@ public class Song {
 
         try {
             return String.format(
-                "Song: %s -- Artist: %s -- Album: %s -- Minutes: %.2f -- Release Date: %s -- " +
+                "Song: %s \n\t-- Artist: %s \n\t-- Album: %s \n\t-- Minutes: %.2f \n\t-- Release Date: %s \n\t-- " +
                     "Number of plays: %d", title, queryArtist(), queryAlbum(),
                 length / 1000.0 / 60, songReleaseDate, queryNumPlayed());
         } catch (SQLException ignore) {

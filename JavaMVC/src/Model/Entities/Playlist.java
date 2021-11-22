@@ -80,7 +80,7 @@ public class Playlist {
      */
     @Override
     public String toString() {
-        return String.format("Playlist: %s -- Number of songs: %s -- Runtime %s", this.name, getSongs().size(), Math.round(this.runtime / 100.0 / 60) / 10.0);
+        return String.format("Playlist: %s \n\t-- Number of songs: %s \n\t-- Runtime %s", this.name, getSongs().size(), Math.round(this.runtime / 100.0 / 60) / 10.0);
     }
 
     public String getPlaylistID() {

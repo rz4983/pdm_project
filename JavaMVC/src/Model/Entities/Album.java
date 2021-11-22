@@ -120,7 +120,7 @@ public class Album {
     @Override
     public String toString() {
         try {
-            return String.format("Album: %s -- Author: %s -- Release Date: %s", this.title,
+            return String.format("Album: %s \n\t-- Author: %s \n\t-- Release Date: %s", this.title,
                     queryArtist(), this.AlbumReleaseDate);
         } catch (SQLException e) {
         }

@@ -142,22 +142,22 @@ public class User {
 
     public String toString() {
         return "User: " +
-                "email: " + email + ' ' +
-                "-- username: " + username + ' ' +
-                "-- name: " + this.getName() + ' ' +
-                "-- followers: " + this.getNumFollowers();
+                "\n\t-- email: " + email + ' ' +
+                "\n\t-- username: " + username + ' ' +
+                "\n\t-- name: " + this.getName() + ' ' +
+                "\n\t-- followers: " + this.getNumFollowers();
     }
 
     public String displayProfile() throws SQLException {
         StringBuilder profile =
                 new StringBuilder("User: " +
-                        "email: " + email + ' ' +
-                        "-- username: " + username + ' ' +
-                        "-- name: " + this.getName() + ' ' +
-                        "-- number of playlists : " + this.getNumPlaylists() + ' ' +
-                        "-- followers: " + this.getNumFollowers() + ' ' +
-                        "-- users followed: " + this.getNumFollowings() + ' ' +
-                        "-- top ten artists: ");
+                        "\n\t-- email: " + email + ' ' +
+                        "\n\t-- username: " + username + ' ' +
+                        "\n\t-- name: " + this.getName() + ' ' +
+                        "\n\t-- number of playlists : " + this.getNumPlaylists() + ' ' +
+                        "\n\t-- followers: " + this.getNumFollowers() + ' ' +
+                        "\n\t-- users followed: " + this.getNumFollowings() + ' ' +
+                        "\n\t-- top ten artists: ");
 
         for (Artist artist : this.getTopArtistsBoth()) // TODO unsure which getTopArtist to use
         {
