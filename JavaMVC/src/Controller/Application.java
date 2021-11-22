@@ -517,8 +517,8 @@ public class Application {
                             }
                             case "genres" -> {
                                 List<Genre> res = getTopGenreSongs();
-                                for (int i = 1; i <= res.size(); i++) {
-                                    System.out.println(i + " -- " + res.get(i));
+                                for (int i = 0; i < res.size(); i++) {
+                                    System.out.println(i +1+ " -- " + res.get(i));
                                 }
                             }
                             case "history" -> {
