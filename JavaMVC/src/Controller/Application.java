@@ -21,9 +21,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Application {
 
@@ -71,7 +73,8 @@ public class Application {
     }
 
     private String[] split(String input) {
-        List<String> matchList = new ArrayList<String>();
+        if (input.strip().length() == 0) return new String[]{};
+        List<String> matchList = new ArrayList<>();
         Pattern regex = Pattern.compile("[^\\s\"']+|\"([^\"]*)\"|'([^']*)'");
         Matcher regexMatcher = regex.matcher(input);
         while (regexMatcher.find()) {
